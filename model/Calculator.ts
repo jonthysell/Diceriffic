@@ -38,11 +38,11 @@ class Calculator {
   }
 
   Clear() {
-    this._currentSign = 1;
+    this._equation.Reset();
   }
 
   Delete() {
-    this._equation.Reset();
+    this._equation.RemovePart();
   }
 }
 
