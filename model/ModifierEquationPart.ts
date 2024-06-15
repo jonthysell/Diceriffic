@@ -5,10 +5,10 @@ import EquationPart from "./EquationPart";
 
 class ModifierEquationPart extends EquationPart {
   override AddValue(): void {
-    this.Values.push(this.Sign);
+    this._values.push(this._sign);
   }
 
-  override ReEvaluate(): void {}
+  override ReEvaluate(): void { }
 
   override GetPartString(): string {
     return this.GetTotalString();
@@ -17,7 +17,7 @@ class ModifierEquationPart extends EquationPart {
   override Equals(other: EquationPart): boolean {
     return (
       other instanceof ModifierEquationPart &&
-      (other as ModifierEquationPart).Sign === this.Sign
+      (other as ModifierEquationPart)._sign === this._sign
     );
   }
 }

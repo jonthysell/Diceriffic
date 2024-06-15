@@ -7,24 +7,28 @@
  * @class EquationPart
  */
 class EquationPart {
-  readonly Sign: -1 | 1;
-  readonly Values: number[];
+  protected readonly _sign: -1 | 1;
+  protected readonly _values: number[];
 
   constructor(sign: -1 | 1) {
     if (this.constructor === EquationPart) {
       throw new Error("Abstract classes can't be instantiated.");
     }
 
-    this.Sign = sign;
-    this.Values = [];
+    this._sign = sign;
+    this._values = [];
+  }
+
+  ValueCount(): number {
+    return this._values.length;
   }
 
   GetTotal(): number {
     let total = 0;
-    for (const value of this.Values) {
+    for (const value of this._values) {
       total += value;
     }
-    return this.Sign * total;
+    return this._sign * total;
   }
 
   AddValue() {
@@ -32,7 +36,7 @@ class EquationPart {
   }
 
   RemoveValue() {
-    this.Values.pop();
+    this._values.pop();
   }
 
   ReEvaluate() {
@@ -44,7 +48,7 @@ class EquationPart {
   }
 
   GetTotalString(): string {
-    return `${this.Sign >= 0 ? "+" : ""}${this.GetTotal()}`;
+    return `${this._sign >= 0 ? "+" : ""}${this.GetTotal()}`;
   }
 
   Equals(other: EquationPart): boolean {

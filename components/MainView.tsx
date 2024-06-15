@@ -6,8 +6,7 @@ import React, { useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 
 import DieType from "../model/DieType";
-import Equation from "../model/Equation";
-import DieRollEquationPart from "../model/DieRollEquationPart";
+import Calculator from "../model/Calculator";
 
 interface DiceItem {
   die: DieType;
@@ -23,18 +22,17 @@ const DiceButton = (_: { item: DiceItem }) => {
   );
 };
 
-const equation = new Equation();
+const calculator = new Calculator();
 
 export default function MainView() {
   const [resultText, setResultText] = useState(" ");
   const [equationText, setEquationText] = useState(" ");
 
   const pressButton = (dieType: DieType) => {
-    const diePart = new DieRollEquationPart(1, dieType);
-    equation.AddPart(diePart);
+    calculator.AddDie(dieType);
 
-    setResultText(equation.GetResultString());
-    setEquationText(equation.GetEquationString());
+    setResultText(calculator.GetResultString());
+    setEquationText(calculator.GetEquationString());
   };
 
   const diceButtons: DiceItem[] = [

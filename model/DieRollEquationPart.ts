@@ -22,23 +22,23 @@ class DieRollEquationPart extends EquationPart {
   }
 
   override AddValue(): void {
-    this.Values.push(rollDie(this.DieType));
+    this._values.push(rollDie(this.DieType));
   }
 
   override ReEvaluate(): void {
-    for (const i in this.Values) {
-      this.Values[i] = rollDie(this.DieType);
+    for (const i in this._values) {
+      this._values[i] = rollDie(this.DieType);
     }
   }
 
   override GetPartString(): string {
-    return `${this.Sign >= 0 ? "+" : "-"}${this.Values.length}d${dieValue(this.DieType)}`;
+    return `${this._sign >= 0 ? "+" : "-"}${this._values.length}d${dieValue(this.DieType)}`;
   }
 
   override Equals(other: EquationPart): boolean {
     if (other instanceof DieRollEquationPart) {
       const dieOther = other as DieRollEquationPart;
-      return dieOther.Sign === this.Sign && dieOther.DieType === this.DieType;
+      return dieOther._sign === this._sign && dieOther.DieType === this.DieType;
     }
 
     return false;
