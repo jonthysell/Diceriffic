@@ -13,7 +13,6 @@ import RollType from "../model/RollType";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#dddddd",
   },
   textRow: {
     padding: 5,
@@ -34,12 +33,6 @@ const styles = StyleSheet.create({
   buttonRow: {
     flex: 1,
     flexDirection: "row",
-  },
-  functionButton: {
-    backgroundColor: "#000000",
-  },
-  functionButtonText: {
-    color: "#ffffff",
   },
 });
 
@@ -75,8 +68,6 @@ function CalcView(props: CalcViewProps) {
       <View style={styles.buttonRow}>
         <CalcButton
           text="C"
-          style={styles.functionButton}
-          textStyle={styles.functionButtonText}
           onPress={() => wrap(() => props.calculator.Clear())}
         />
         <CalcButton
@@ -94,6 +85,8 @@ function CalcView(props: CalcViewProps) {
 
         <CalcButton
           text="⌫"
+          style={{ backgroundColor: "#ff0000" }}
+          textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.Delete())}
         />
       </View>
@@ -167,7 +160,7 @@ function CalcView(props: CalcViewProps) {
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D8))}
         />
         <CalcButton
-          text="⌈x⌉"
+          text="⌈⨯⌉"
           onPress={() =>
             wrap(
               () => (props.calculator.CurrentRollType = RollType.TakeHighest),
@@ -195,7 +188,7 @@ function CalcView(props: CalcViewProps) {
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D5))}
         />
         <CalcButton
-          text="⌊x⌋"
+          text="⌊⨯⌋"
           onPress={() =>
             wrap(() => (props.calculator.CurrentRollType = RollType.TakeLowest))
           }
