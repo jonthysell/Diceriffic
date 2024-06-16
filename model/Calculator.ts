@@ -2,17 +2,21 @@
 // Licensed under the MIT License.
 
 import DieType from "./DieType";
+import RollType from "./RollType";
 import Equation from "./Equation";
 import DieRollEquationPart from "./DieRollEquationPart";
 import ModifierEquationPart from "./ModifierEquationPart";
 
 class Calculator {
   private readonly _equation: Equation;
-  private _currentSign: -1 | 1;
+
+  CurrentSign: -1 | 1;
+  CurrentRollType: RollType;
 
   constructor() {
     this._equation = new Equation();
-    this._currentSign = 1;
+    this.CurrentSign = 1;
+    this.CurrentRollType = RollType.Sum;
   }
 
   GetEquationString(): string {
@@ -24,21 +28,27 @@ class Calculator {
   }
 
   AddDie(dieType: DieType) {
-    const diePart = new DieRollEquationPart(this._currentSign, dieType);
+    const diePart = new DieRollEquationPart(
+      this.CurrentSign,
+      dieType,
+      this.CurrentRollType,
+    );
     this._equation.AddPart(diePart);
   }
 
   AddModifier() {
-    const modPart = new ModifierEquationPart(this._currentSign);
+    const modPart = new ModifierEquationPart(this.CurrentSign);
     this._equation.AddPart(modPart);
   }
 
   ToggleSign() {
-    this._currentSign *= -1;
+    this.CurrentSign *= -1;
   }
 
   Clear() {
     this._equation.Reset();
+    this.CurrentSign = 1;
+    this.CurrentRollType = RollType.Sum;
   }
 
   Delete() {

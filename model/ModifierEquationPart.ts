@@ -8,7 +8,7 @@ class ModifierEquationPart extends EquationPart {
     this._values.push(this._sign);
   }
 
-  override ReEvaluate(): void { }
+  override ReEvaluate(): void {}
 
   override GetPartString(): string {
     return this.GetTotalString();
