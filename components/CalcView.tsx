@@ -63,7 +63,7 @@ function CalcView(props: CalcViewProps) {
   const wrap = (f: () => void) => {
     f();
     setModeText(
-      `${props.calculator.CurrentSign >= 0 ? "+" : "-"} ${props.calculator.CurrentRollType}`,
+      `${props.calculator.CurrentSign >= 0 ? "+" : "−"} ${props.calculator.CurrentRollType}`,
     );
     setResultText(props.calculator.GetResultString());
     setEquationText(props.calculator.GetEquationString());
