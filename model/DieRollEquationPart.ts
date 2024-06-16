@@ -70,7 +70,14 @@ class DieRollEquationPart extends EquationPart {
   }
 
   override GetPartString(): string {
-    return `${this._sign >= 0 ? "+" : "−"}${this._values.length}d${dieValue(this.DieType)}`;
+    let preFix = "";
+    let postFix = "";
+
+    if (this.RollType !== RollType.Sum) {
+      [preFix, postFix] = this.RollType.split("⨯");
+    }
+
+    return `${this._sign >= 0 ? "+" : "−"}${preFix}${this._values.length}d${dieValue(this.DieType)}${postFix}`;
   }
 
   override Equals(other: EquationPart): boolean {
