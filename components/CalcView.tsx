@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "flex-end",
   },
+  modeRow: {
+    padding: 5,
+    alignItems: "center",
+  },
   modeText: {
     padding: 5,
     fontSize: 12,
@@ -34,6 +38,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
   },
+  modeColumn: {
+    flex: 1,
+    flexDirection: "column",
+  },
 });
 
 interface CalcViewProps {
@@ -44,6 +52,7 @@ function CalcView(props: CalcViewProps) {
   const [modeText, setModeText] = useState("+ ∑");
   const [resultText, setResultText] = useState("0");
   const [equationText, setEquationText] = useState(" ");
+  const [modifierText, setModifierText] = useState("+");
 
   const wrap = (f: () => void) => {
     f();
@@ -52,11 +61,12 @@ function CalcView(props: CalcViewProps) {
     );
     setResultText(props.calculator.GetResultString());
     setEquationText(props.calculator.GetEquationString());
+    setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "-");
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.textRow}>
+      <View style={styles.modeRow}>
         <Text style={styles.modeText}>{modeText}</Text>
       </View>
       <View style={styles.textRow}>
@@ -67,132 +77,169 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text="C"
-          onPress={() => wrap(() => props.calculator.Clear())}
-        />
-        <CalcButton
-          text="d30"
-          style={{ backgroundColor: "#1eabf4" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D30))}
-        />
-        <CalcButton
-          text="d100"
-          style={{ backgroundColor: "#ffffff" }}
-          textStyle={{ color: "#000000" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D100))}
-        />
-
-        <CalcButton
-          text="⌫"
-          style={{ backgroundColor: "#ff0000" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.Delete())}
-        />
-      </View>
-      <View style={styles.buttonRow}>
-        <CalcButton
-          text="d16"
-          style={{ backgroundColor: "#14349c" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D16))}
-        />
-        <CalcButton
-          text="d20"
-          style={{ backgroundColor: "#ff4f00" }}
-          textStyle={{ color: "#000000" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D20))}
-        />
-        <CalcButton
-          text="d24"
+          text={DieType.D24}
           style={{ backgroundColor: "#912899" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D24))}
         />
         <CalcButton
-          text="±"
-          onPress={() => wrap(() => props.calculator.ToggleSign())}
+          text={DieType.D30}
+          style={{ backgroundColor: "#1eabf4" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D30))}
         />
+        <CalcButton
+          text={DieType.D100}
+          style={{ backgroundColor: "#ffffff" }}
+          textStyle={{ color: "#000000" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D100))}
+        />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text="C"
+            style={{ backgroundColor: "#ff0000" }}
+            textStyle={{ color: "#ffffff" }}
+            onPress={() => wrap(() => props.calculator.Clear())}
+          />
+        </View>
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text="d10"
-          style={{ backgroundColor: "#ffffff" }}
-          textStyle={{ color: "#000000" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D10))}
-        />
-        <CalcButton
-          text="d12"
-          style={{ backgroundColor: "#ffd800" }}
-          textStyle={{ color: "#000000" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D12))}
-        />
-        <CalcButton
-          text="d14"
+          text={DieType.D14}
           style={{ backgroundColor: "#000000" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D14))}
         />
         <CalcButton
-          text="∑"
-          onPress={() =>
-            wrap(() => (props.calculator.CurrentRollType = RollType.Sum))
-          }
+          text={DieType.D16}
+          style={{ backgroundColor: "#14349c" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D16))}
         />
+        <CalcButton
+          text={DieType.D20}
+          style={{ backgroundColor: "#ff4f00" }}
+          textStyle={{ color: "#000000" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D20))}
+        />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text="⌫"
+            style={{ backgroundColor: "#aaaaaa" }}
+            textStyle={{ color: "#ffffff" }}
+            onPress={() => wrap(() => props.calculator.Delete())}
+          />
+          <CalcButton
+            text={RollType.Sum}
+            style={{ backgroundColor: "#dddddd" }}
+            textStyle={{ color: "#000000" }}
+            onPress={() =>
+              wrap(() => (props.calculator.CurrentRollType = RollType.Sum))
+            }
+          />
+        </View>
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text="d6"
-          style={{ backgroundColor: "#b22222" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D6))}
-        />
-        <CalcButton
-          text="d7"
-          style={{ backgroundColor: "#694d80" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D7))}
-        />
-        <CalcButton
-          text="d8"
+          text={DieType.D8}
           style={{ backgroundColor: "#1b1bf8" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D8))}
         />
         <CalcButton
-          text="⌈⨯⌉"
-          onPress={() =>
-            wrap(
-              () => (props.calculator.CurrentRollType = RollType.TakeHighest),
-            )
-          }
+          text={DieType.D10}
+          style={{ backgroundColor: "#ffffff" }}
+          textStyle={{ color: "#000000" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D10))}
         />
+        <CalcButton
+          text={DieType.D12}
+          style={{ backgroundColor: "#ffd800" }}
+          textStyle={{ color: "#000000" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D12))}
+        />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text={RollType.TakeHighest}
+            onPress={() =>
+              wrap(
+                () => (props.calculator.CurrentRollType = RollType.TakeHighest),
+              )
+            }
+          />
+          <CalcButton
+            text={RollType.TakeLowest}
+            onPress={() =>
+              wrap(
+                () => (props.calculator.CurrentRollType = RollType.TakeLowest),
+              )
+            }
+          />
+        </View>
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text="d3"
-          style={{ backgroundColor: "#ff389c" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D3))}
-        />
-        <CalcButton
-          text="d4"
-          style={{ backgroundColor: "#145436" }}
-          textStyle={{ color: "#ffffff" }}
-          onPress={() => wrap(() => props.calculator.AddDie(DieType.D4))}
-        />
-        <CalcButton
-          text="d5"
+          text={DieType.D5}
           style={{ backgroundColor: "#ffa500" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D5))}
         />
         <CalcButton
-          text="⌊⨯⌋"
-          onPress={() =>
-            wrap(() => (props.calculator.CurrentRollType = RollType.TakeLowest))
-          }
+          text={DieType.D6}
+          style={{ backgroundColor: "#eb2b2b" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D6))}
         />
+        <CalcButton
+          text={DieType.D7}
+          style={{ backgroundColor: "#694d80" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D7))}
+        />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text={RollType.SumDropHighest}
+            onPress={() =>
+              wrap(
+                () =>
+                  (props.calculator.CurrentRollType = RollType.SumDropHighest),
+              )
+            }
+          />
+          <CalcButton
+            text={RollType.SumDropLowest}
+            onPress={() =>
+              wrap(
+                () =>
+                  (props.calculator.CurrentRollType = RollType.SumDropLowest),
+              )
+            }
+          />
+        </View>
+      </View>
+      <View style={styles.buttonRow}>
+        <CalcButton
+          text={DieType.D3}
+          style={{ backgroundColor: "#ff389c" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D3))}
+        />
+        <CalcButton
+          text={DieType.D4}
+          style={{ backgroundColor: "#145436" }}
+          textStyle={{ color: "#ffffff" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.D4))}
+        />
+        <CalcButton
+          text={`${modifierText}1`}
+          onPress={() => wrap(() => props.calculator.AddModifier())}
+        />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text="+/-"
+            onPress={() => wrap(() => props.calculator.ToggleSign())}
+          />
+        </View>
       </View>
     </View>
   );

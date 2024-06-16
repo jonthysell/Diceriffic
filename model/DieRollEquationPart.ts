@@ -6,7 +6,7 @@ import RollType from "./RollType";
 import EquationPart from "./EquationPart";
 
 function dieValue(dieType: DieType): string {
-  return DieType[dieType].substring(1);
+  return dieType.substring(1);
 }
 
 function rollDie(dieType: DieType): number {
