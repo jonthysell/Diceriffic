@@ -49,10 +49,16 @@ interface CalcViewProps {
 }
 
 function CalcView(props: CalcViewProps) {
-  const [modeText, setModeText] = useState("+ ∑");
-  const [resultText, setResultText] = useState("0");
+  const [modeText, setModeText] = useState(
+    `+ ${props.calculator.CurrentRollType}`,
+  );
+  const [resultText, setResultText] = useState(
+    props.calculator.GetResultString(),
+  );
   const [equationText, setEquationText] = useState(" ");
-  const [modifierText, setModifierText] = useState("+");
+  const [modifierText, setModifierText] = useState(
+    props.calculator.CurrentSign >= 0 ? "+" : "−",
+  );
 
   const wrap = (f: () => void) => {
     f();
@@ -61,7 +67,7 @@ function CalcView(props: CalcViewProps) {
     );
     setResultText(props.calculator.GetResultString());
     setEquationText(props.calculator.GetEquationString());
-    setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "-");
+    setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "−");
   };
 
   return (
@@ -125,14 +131,14 @@ function CalcView(props: CalcViewProps) {
         <View style={styles.modeColumn}>
           <CalcButton
             text="⌫"
-            style={{ backgroundColor: "#aaaaaa" }}
+            style={{ backgroundColor: "#999999" }}
             textStyle={{ color: "#ffffff" }}
             onPress={() => wrap(() => props.calculator.Delete())}
           />
           <CalcButton
             text={RollType.Sum}
-            style={{ backgroundColor: "#dddddd" }}
-            textStyle={{ color: "#000000" }}
+            style={{ backgroundColor: "#cccccc" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() =>
               wrap(() => (props.calculator.CurrentRollType = RollType.Sum))
             }
@@ -161,6 +167,8 @@ function CalcView(props: CalcViewProps) {
         <View style={styles.modeColumn}>
           <CalcButton
             text={RollType.TakeHighest}
+            style={{ backgroundColor: "#cc9999" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() =>
               wrap(
                 () => (props.calculator.CurrentRollType = RollType.TakeHighest),
@@ -169,6 +177,8 @@ function CalcView(props: CalcViewProps) {
           />
           <CalcButton
             text={RollType.TakeLowest}
+            style={{ backgroundColor: "#cc9999" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() =>
               wrap(
                 () => (props.calculator.CurrentRollType = RollType.TakeLowest),
@@ -199,6 +209,8 @@ function CalcView(props: CalcViewProps) {
         <View style={styles.modeColumn}>
           <CalcButton
             text={RollType.SumDropHighest}
+            style={{ backgroundColor: "#99cc99" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() =>
               wrap(
                 () =>
@@ -208,6 +220,8 @@ function CalcView(props: CalcViewProps) {
           />
           <CalcButton
             text={RollType.SumDropLowest}
+            style={{ backgroundColor: "#99cc99" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() =>
               wrap(
                 () =>
@@ -236,7 +250,9 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text="+/-"
+            text="+ / −"
+            style={{ backgroundColor: "#9999cc" }}
+            textStyle={{ color: "#ffffff" }}
             onPress={() => wrap(() => props.calculator.ToggleSign())}
           />
         </View>

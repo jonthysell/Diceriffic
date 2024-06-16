@@ -70,7 +70,7 @@ class DieRollEquationPart extends EquationPart {
   }
 
   override GetPartString(): string {
-    return `${this._sign >= 0 ? "+" : "-"}${this._values.length}d${dieValue(this.DieType)}`;
+    return `${this._sign >= 0 ? "+" : "−"}${this._values.length}d${dieValue(this.DieType)}`;
   }
 
   override Equals(other: EquationPart): boolean {

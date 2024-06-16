@@ -48,7 +48,7 @@ class EquationPart {
   }
 
   GetTotalString(): string {
-    return `${this._sign >= 0 ? "+" : ""}${this.GetTotal()}`;
+    return `${this._sign >= 0 ? "+" : "−"}${Math.abs(this.GetTotal())}`;
   }
 
   Equals(other: EquationPart): boolean {

@@ -3,10 +3,10 @@
 
 enum RollType {
   Sum = "∑",
-  SumDropHighest = "D⌈⨯⌉",
-  SumDropLowest = "D⌊⨯⌋",
-  TakeHighest = "T⌈⨯⌉",
-  TakeLowest = "T⌊⨯⌋",
+  SumDropHighest = "D ⌈⨯⌉",
+  SumDropLowest = "D ⌊⨯⌋",
+  TakeHighest = "T ⌈⨯⌉",
+  TakeLowest = "T ⌊⨯⌋",
 }
 
 export default RollType;

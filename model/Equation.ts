@@ -60,7 +60,7 @@ class Equation {
   GetResultString(): string {
     let total = 0;
     this.GetPartTotals().forEach((t) => (total += t));
-    return total.toString();
+    return total.toString().replace("-", "−");
   }
 }
 
