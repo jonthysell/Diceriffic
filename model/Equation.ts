@@ -45,6 +45,10 @@ class Equation {
     this._parts = [];
   }
 
+  ReEvaluate() {
+    this._parts.forEach((p) => p.ReEvaluate());
+  }
+
   GetPartTotals(): number[] {
     let totals: number[] = [];
     this._parts.forEach((p) => totals.push(p.GetTotal()));

@@ -257,6 +257,14 @@ function CalcView(props: CalcViewProps) {
           />
         </View>
       </View>
+      <View style={styles.buttonRow}>
+        <CalcButton
+          text="⟳"
+          style={{ backgroundColor: "#999999" }}
+          textStyle={{ color: "#ffffff", fontSize: 36 }}
+          onPress={() => wrap(() => props.calculator.ReEvaluate())}
+        />
+      </View>
     </View>
   );
 }

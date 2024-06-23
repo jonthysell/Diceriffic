@@ -45,6 +45,10 @@ class Calculator {
     this.CurrentSign *= -1;
   }
 
+  ReEvaluate() {
+    this._equation.ReEvaluate();
+  }
+
   Clear() {
     this._equation.Reset();
     this.CurrentSign = 1;
