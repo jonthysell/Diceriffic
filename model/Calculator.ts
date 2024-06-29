@@ -23,6 +23,10 @@ class Calculator {
     return this._equation.GetEquationString();
   }
 
+  GetValuesString(): string {
+    return this._equation.GetValuesString();
+  }
+
   GetResultString(): string {
     return this._equation.GetResultString();
   }

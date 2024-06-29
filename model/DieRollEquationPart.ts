@@ -16,7 +16,7 @@ function rollDie(dieType: DieType): number {
 
 class DieRollEquationPart extends EquationPart {
   readonly DieType: DieType;
-  readonly RollType: RollType;
+  RollType: RollType;
 
   constructor(
     sign: -1 | 1,
@@ -38,20 +38,17 @@ class DieRollEquationPart extends EquationPart {
     }
   }
 
-  override GetTotal(): number {
-    let minValue: number | undefined = undefined;
-    let maxValue: number | undefined = undefined;
+  override GetResult(): number {
     let total = 0;
+    this._values.forEach((v) => (total += v));
 
-    for (const value of this._values) {
-      minValue = minValue === undefined || value < minValue ? value : minValue;
-      maxValue = maxValue === undefined || value > maxValue ? value : maxValue;
-      total += value;
+    if (this.RollType === RollType.Sum) {
+      return total;
     }
 
+    const { minValue, maxValue } = this.GetMinMaxValues();
+
     switch (this.RollType) {
-      case RollType.Sum:
-        break;
       case RollType.SumDropHighest:
         total -= maxValue ?? 0;
         break;
@@ -69,7 +66,7 @@ class DieRollEquationPart extends EquationPart {
     return this._sign * total;
   }
 
-  override GetPartString(): string {
+  override GetEquationString(): string {
     let preFix = "";
     let postFix = "";
 
@@ -78,6 +75,13 @@ class DieRollEquationPart extends EquationPart {
     }
 
     return `${this._sign >= 0 ? "+" : "−"}${preFix}${this._values.length}d${dieValue(this.DieType)}${postFix}`;
+  }
+
+  override GetValuesString(): string {
+    if (this._values.length > 0) {
+      return `[${this._values.join(",")}]`;
+    }
+    return "";
   }
 
   override Equals(other: EquationPart): boolean {
@@ -91,6 +95,21 @@ class DieRollEquationPart extends EquationPart {
     }
 
     return false;
+  }
+
+  private GetMinMaxValues(): {
+    minValue: number | undefined;
+    maxValue: number | undefined;
+  } {
+    let minValue: number | undefined = undefined;
+    let maxValue: number | undefined = undefined;
+
+    for (const value of this._values) {
+      minValue = minValue === undefined || value < minValue ? value : minValue;
+      maxValue = maxValue === undefined || value > maxValue ? value : maxValue;
+    }
+
+    return { minValue, maxValue };
   }
 }
 

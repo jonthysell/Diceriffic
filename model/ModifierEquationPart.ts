@@ -10,8 +10,18 @@ class ModifierEquationPart extends EquationPart {
 
   override ReEvaluate(): void {}
 
-  override GetPartString(): string {
-    return this.GetTotalString();
+  override GetResult(): number {
+    let total = 0;
+    this._values.forEach((v) => (total += v));
+    return total;
+  }
+
+  override GetEquationString(): string {
+    return this.GetResultString();
+  }
+
+  override GetValuesString(): string {
+    return this.GetResultString();
   }
 
   override Equals(other: EquationPart): boolean {

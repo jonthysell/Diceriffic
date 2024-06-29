@@ -23,12 +23,8 @@ class EquationPart {
     return this._values.length;
   }
 
-  GetTotal(): number {
-    let total = 0;
-    for (const value of this._values) {
-      total += value;
-    }
-    return this._sign * total;
+  GetResult(): number {
+    throw new Error("Method 'GetResult()' not implemented.");
   }
 
   AddValue() {
@@ -43,12 +39,16 @@ class EquationPart {
     throw new Error("Method 'ReEvaluate()' not implemented.");
   }
 
-  GetPartString(): string {
-    return this.GetTotalString();
+  GetEquationString(): string {
+    throw new Error("Method 'GetEquationString()' not implemented.");
   }
 
-  GetTotalString(): string {
-    return `${this._sign >= 0 ? "+" : "−"}${Math.abs(this.GetTotal())}`;
+  GetValuesString(): string {
+    throw new Error("Method 'GetValuesString()' not implemented.");
+  }
+
+  GetResultString(): string {
+    return `${this._sign >= 0 ? "+" : "−"}${Math.abs(this.GetResult())}`;
   }
 
   Equals(other: EquationPart): boolean {

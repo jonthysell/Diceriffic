@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textRow: {
-    padding: 5,
+    padding: 2,
     alignItems: "flex-end",
   },
   modeRow: {
@@ -23,15 +23,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modeText: {
-    padding: 5,
+    padding: 2,
     fontSize: 12,
   },
   resultText: {
-    padding: 5,
+    padding: 3,
     fontSize: 36,
   },
   equationText: {
-    padding: 5,
+    padding: 3,
+    fontSize: 18,
+  },
+  valuesText: {
+    padding: 3,
     fontSize: 18,
   },
   buttonRow: {
@@ -56,6 +60,7 @@ function CalcView(props: CalcViewProps) {
     props.calculator.GetResultString(),
   );
   const [equationText, setEquationText] = useState(" ");
+  const [valuesText, setValuesText] = useState(" ");
   const [modifierText, setModifierText] = useState(
     props.calculator.CurrentSign >= 0 ? "+" : "−",
   );
@@ -66,6 +71,7 @@ function CalcView(props: CalcViewProps) {
       `${props.calculator.CurrentSign >= 0 ? "+" : "−"} ${props.calculator.CurrentRollType}`,
     );
     setResultText(props.calculator.GetResultString());
+    setValuesText(props.calculator.GetValuesString());
     setEquationText(props.calculator.GetEquationString());
     setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "−");
   };
@@ -77,6 +83,9 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.textRow}>
         <Text style={styles.resultText}>{resultText}</Text>
+      </View>
+      <View style={styles.textRow}>
+        <Text style={styles.valuesText}>{valuesText}</Text>
       </View>
       <View style={styles.textRow}>
         <Text style={styles.equationText}>{equationText}</Text>

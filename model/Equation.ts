@@ -49,21 +49,27 @@ class Equation {
     this._parts.forEach((p) => p.ReEvaluate());
   }
 
-  GetPartTotals(): number[] {
+  GetPartResults(): number[] {
     let totals: number[] = [];
-    this._parts.forEach((p) => totals.push(p.GetTotal()));
+    this._parts.forEach((p) => totals.push(p.GetResult()));
     return totals;
   }
 
   GetEquationString(): string {
     let text = "";
-    this._parts.forEach((p) => (text += p.GetPartString()));
+    this._parts.forEach((p) => (text += p.GetEquationString()));
     return text.startsWith("+") ? text.substring(1) : text;
+  }
+
+  GetValuesString(): string {
+    let text = "";
+    this._parts.forEach((p) => (text += ` ${p.GetValuesString()}`));
+    return text;
   }
 
   GetResultString(): string {
     let total = 0;
-    this.GetPartTotals().forEach((t) => (total += t));
+    this.GetPartResults().forEach((t) => (total += t));
     return total.toString().replace("-", "−");
   }
 }
