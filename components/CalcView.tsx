@@ -22,20 +22,16 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "center",
   },
-  modeText: {
-    padding: 2,
-    fontSize: 12,
-  },
   resultText: {
     padding: 3,
     fontSize: 36,
   },
   equationText: {
-    padding: 3,
+    padding: 2,
     fontSize: 18,
   },
   rollsText: {
-    padding: 3,
+    padding: 2,
     fontSize: 14,
   },
   buttonRow: {
