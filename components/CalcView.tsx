@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     padding: 3,
     fontSize: 18,
   },
-  valuesText: {
+  rollsText: {
     padding: 3,
-    fontSize: 18,
+    fontSize: 14,
   },
   buttonRow: {
     flex: 1,
@@ -73,29 +73,29 @@ function CalcView(props: CalcViewProps) {
   return (
     <View style={styles.container}>
       <View style={styles.textRow}>
-        <Text style={styles.resultText}>{resultText}</Text>
-      </View>
-      <View style={styles.textRow}>
-        <Text style={styles.valuesText}>{rollsText}</Text>
-      </View>
-      <View style={styles.textRow}>
         <Text style={styles.equationText}>{equationText}</Text>
+      </View>
+      <View style={styles.textRow}>
+        <Text style={styles.rollsText}>{rollsText}</Text>
+      </View>
+      <View style={styles.textRow}>
+        <Text style={styles.resultText}>{resultText}</Text>
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text={DieType.D24}
+          text={`${modifierText}${DieType.D24}`}
           style={{ backgroundColor: "#912899" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D24))}
         />
         <CalcButton
-          text={DieType.D30}
+          text={`${modifierText}${DieType.D30}`}
           style={{ backgroundColor: "#1eabf4" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D30))}
         />
         <CalcButton
-          text={DieType.D100}
+          text={`${modifierText}${DieType.D100}`}
           style={{ backgroundColor: "#ffffff" }}
           textStyle={{ color: "#000000" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D100))}
@@ -111,19 +111,19 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text={DieType.D14}
+          text={`${modifierText}${DieType.D14}`}
           style={{ backgroundColor: "#000000" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D14))}
         />
         <CalcButton
-          text={DieType.D16}
+          text={`${modifierText}${DieType.D16}`}
           style={{ backgroundColor: "#14349c" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D16))}
         />
         <CalcButton
-          text={DieType.D20}
+          text={`${modifierText}${DieType.D20}`}
           style={{ backgroundColor: "#ff4f00" }}
           textStyle={{ color: "#000000" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D20))}
@@ -145,19 +145,19 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text={DieType.D8}
+          text={`${modifierText}${DieType.D8}`}
           style={{ backgroundColor: "#1b1bf8" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D8))}
         />
         <CalcButton
-          text={DieType.D10}
+          text={`${modifierText}${DieType.D10}`}
           style={{ backgroundColor: "#ffffff" }}
           textStyle={{ color: "#000000" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D10))}
         />
         <CalcButton
-          text={DieType.D12}
+          text={`${modifierText}${DieType.D12}`}
           style={{ backgroundColor: "#ffd800" }}
           textStyle={{ color: "#000000" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D12))}
@@ -179,19 +179,19 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text={DieType.D5}
+          text={`${modifierText}${DieType.D5}`}
           style={{ backgroundColor: "#ffa500" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D5))}
         />
         <CalcButton
-          text={DieType.D6}
+          text={`${modifierText}${DieType.D6}`}
           style={{ backgroundColor: "#eb2b2b" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D6))}
         />
         <CalcButton
-          text={DieType.D7}
+          text={`${modifierText}${DieType.D7}`}
           style={{ backgroundColor: "#694d80" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D7))}
@@ -213,13 +213,13 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
-          text={DieType.D3}
+          text={`${modifierText}${DieType.D3}`}
           style={{ backgroundColor: "#ff389c" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D3))}
         />
         <CalcButton
-          text={DieType.D4}
+          text={`${modifierText}${DieType.D4}`}
           style={{ backgroundColor: "#145436" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D4))}
