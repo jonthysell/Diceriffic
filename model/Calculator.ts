@@ -8,11 +8,10 @@ import EquationTerm from "./EquationTerm";
 class Calculator {
   private readonly _equation: Equation;
 
-  CurrentSign: -1 | 1;
+  CurrentSign: -1 | 1 = 1;
 
   constructor() {
     this._equation = new Equation();
-    this.CurrentSign = 1;
   }
 
   GetEquationString(): string {

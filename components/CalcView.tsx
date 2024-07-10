@@ -139,6 +139,7 @@ function CalcView(props: CalcViewProps) {
             text="!"
             style={{ backgroundColor: "#cccccc" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanExplode}
             onPress={() => wrap(() => props.calculator.ExplodeDice())}
           />
         </View>
@@ -167,12 +168,14 @@ function CalcView(props: CalcViewProps) {
             text="kh"
             style={{ backgroundColor: "#cc9999" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanKeep}
             onPress={() => wrap(() => props.calculator.KeepHighest())}
           />
           <CalcButton
             text="kl"
             style={{ backgroundColor: "#cc9999" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanKeep}
             onPress={() => wrap(() => props.calculator.KeepLowest())}
           />
         </View>
@@ -201,12 +204,14 @@ function CalcView(props: CalcViewProps) {
             text="dh"
             style={{ backgroundColor: "#99cc99" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanDrop}
             onPress={() => wrap(() => props.calculator.DropHighest())}
           />
           <CalcButton
             text="dl"
             style={{ backgroundColor: "#99cc99" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanDrop}
             onPress={() => wrap(() => props.calculator.DropLowest())}
           />
         </View>

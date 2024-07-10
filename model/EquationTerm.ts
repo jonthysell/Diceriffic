@@ -281,7 +281,7 @@ class EquationTerm {
         if (innerText.startsWith(",")) {
           innerText = innerText.substring(1);
         }
-        text += `[${innerText}]`;
+        text += `(${innerText})`;
       }
     });
     if (text.startsWith(",")) {
