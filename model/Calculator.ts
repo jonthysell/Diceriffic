@@ -2,47 +2,108 @@
 // Licensed under the MIT License.
 
 import DieType from "./DieType";
-import RollType from "./RollType";
 import Equation from "./Equation";
-import DieRollEquationPart from "./DieRollEquationPart";
-import ModifierEquationPart from "./ModifierEquationPart";
+import EquationTerm from "./EquationTerm";
 
 class Calculator {
   private readonly _equation: Equation;
 
   CurrentSign: -1 | 1;
-  CurrentRollType: RollType;
 
   constructor() {
     this._equation = new Equation();
     this.CurrentSign = 1;
-    this.CurrentRollType = RollType.Sum;
   }
 
   GetEquationString(): string {
     return this._equation.GetEquationString();
   }
 
-  GetValuesString(): string {
-    return this._equation.GetValuesString();
+  GetRollsString(): string {
+    return this._equation.GetRollsString();
   }
 
   GetResultString(): string {
     return this._equation.GetResultString();
   }
 
-  AddDie(dieType: DieType) {
-    const diePart = new DieRollEquationPart(
-      this.CurrentSign,
-      dieType,
-      this.CurrentRollType,
+  private get LatestTerm(): EquationTerm | undefined {
+    return this._equation.LatestTerm;
+  }
+
+  AddDie(dieType: DieType): void {
+    if (
+      this.LatestTerm &&
+      this.LatestTerm.Sign === this.CurrentSign &&
+      this.LatestTerm.DieType === dieType &&
+      this.CanExplode
+    ) {
+      this.LatestTerm.AddDie();
+    } else {
+      const newTerm = new EquationTerm(this.CurrentSign, dieType);
+      newTerm.AddDie();
+      this._equation.AddTerm(newTerm);
+    }
+  }
+
+  get CanExplode(): boolean {
+    return (
+      this.LatestTerm?.HasExploded === false && this.CanDrop && this.CanKeep
     );
-    this._equation.AddPart(diePart);
+  }
+
+  ExplodeDice() {
+    try {
+      this.LatestTerm?.ExplodeDice();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  get CanDrop(): boolean {
+    return this.LatestTerm?.HasKeeps === false;
+  }
+
+  DropLowest() {
+    try {
+      this.LatestTerm?.DropLowest();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  DropHighest() {
+    try {
+      this.LatestTerm?.DropHighest();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  get CanKeep(): boolean {
+    return this.LatestTerm?.HasDrops === false;
+  }
+
+  KeepLowest() {
+    try {
+      this.LatestTerm?.KeepLowest();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  KeepHighest() {
+    try {
+      this.LatestTerm?.KeepHighest();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   AddModifier() {
-    const modPart = new ModifierEquationPart(this.CurrentSign);
-    this._equation.AddPart(modPart);
+    if (this.LatestTerm) {
+      this.LatestTerm.Modifier += this.CurrentSign;
+    }
   }
 
   ToggleSign() {
@@ -56,11 +117,10 @@ class Calculator {
   Clear() {
     this._equation.Reset();
     this.CurrentSign = 1;
-    this.CurrentRollType = RollType.Sum;
   }
 
   Delete() {
-    this._equation.RemovePart();
+    this._equation.RemoveTerm();
   }
 }
 

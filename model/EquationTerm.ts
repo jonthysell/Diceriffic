@@ -36,35 +36,35 @@ class EquationTerm {
     this._results = [];
   }
 
-  public get Sign(): -1 | 1 {
+  get Sign(): -1 | 1 {
     return this._sign;
   }
 
-  public get NumDice(): number {
+  get NumDice(): number {
     return this._results.length;
   }
 
-  public get DieType(): DieType {
+  get DieType(): DieType {
     return this._dieType;
   }
 
-  public get Modifier(): number {
+  get Modifier(): number {
     return this._modifier;
   }
 
-  public set Modifier(value: number) {
+  set Modifier(value: number) {
     this._modifier = value;
   }
 
-  public get HasExploded(): boolean {
+  get HasExploded(): boolean {
     return this._explode;
   }
 
-  public get HasDrops(): boolean {
+  get HasDrops(): boolean {
     return this._dropHighest > 0 || this._dropLowest > 0;
   }
 
-  public get HasKeeps(): boolean {
+  get HasKeeps(): boolean {
     return this._keepHighest > 0 || this._keepLowest > 0;
   }
 
@@ -73,7 +73,7 @@ class EquationTerm {
     const numDice = this.NumDice;
     this._results = [];
     while (this._results.length < numDice) {
-      this.AddDie();
+      this.applyAddDie();
     }
 
     // Re-explode if necessary
@@ -103,10 +103,14 @@ class EquationTerm {
       throw new Error("Unable to add die after keep operation.");
     }
 
+    this.applyAddDie();
+  }
+
+  private applyAddDie(): void {
     this._results.push([this.generateRoll()]);
   }
 
-  public ExplodeDice(): void {
+  ExplodeDice(): void {
     if (this.HasExploded) {
       throw new Error("Unable to explode dice more than once.");
     }
@@ -134,7 +138,7 @@ class EquationTerm {
     return new RollResult(rollDie(this.DieType), true, explode);
   }
 
-  public DropLowest(): void {
+  DropLowest(): void {
     if (this.HasKeeps) {
       throw new Error("Unable to drop dice after keep operation.");
     }
@@ -143,7 +147,7 @@ class EquationTerm {
     this.applyDrops();
   }
 
-  public DropHighest(): void {
+  DropHighest(): void {
     if (this.HasKeeps) {
       throw new Error("Unable to drop dice after keep operation.");
     }
@@ -172,7 +176,7 @@ class EquationTerm {
     }
   }
 
-  public KeepLowest(): void {
+  KeepLowest(): void {
     if (this.HasDrops) {
       throw new Error("Unable to keep dice after drop operation.");
     }
@@ -181,7 +185,7 @@ class EquationTerm {
     this.applyKeeps();
   }
 
-  public KeepHighest(): void {
+  KeepHighest(): void {
     if (this.HasDrops) {
       throw new Error("Unable to keep dice after drop operation.");
     }
@@ -214,6 +218,31 @@ class EquationTerm {
     this._results.forEach((r) => r.forEach((v) => (v.Keep = keep)));
   }
 
+  private GetMinMaxValues(targetKeep: boolean = true): {
+    minValue: RollResult | undefined;
+    maxValue: RollResult | undefined;
+  } {
+    let minValue: RollResult | undefined = undefined;
+    let maxValue: RollResult | undefined = undefined;
+
+    for (const result of this._results) {
+      for (const value of result) {
+        if (value.Keep === targetKeep) {
+          minValue =
+            minValue === undefined || value.Value < minValue.Value
+              ? value
+              : minValue;
+          maxValue =
+            maxValue === undefined || value.Value > maxValue.Value
+              ? value
+              : maxValue;
+        }
+      }
+    }
+
+    return { minValue, maxValue };
+  }
+
   GetTotal(): number {
     let total = 0;
     this._results.forEach((r) =>
@@ -236,6 +265,29 @@ class EquationTerm {
       }),
     );
     return result;
+  }
+
+  GetRollsString(): string {
+    let text = "";
+    this._results.forEach((r) => {
+      text += ",";
+      if (r.length === 1) {
+        text += `${r.at(0)!.Value}`;
+      } else if (r.length > 1) {
+        let innerText = "";
+        r.forEach((v) => {
+          innerText += `,${v.Value}`;
+        });
+        if (innerText.startsWith(",")) {
+          innerText = innerText.substring(1);
+        }
+        text += `[${innerText}]`;
+      }
+    });
+    if (text.startsWith(",")) {
+      text = text.substring(1);
+    }
+    return `${this._sign >= 0 ? " + " : " − "}[${text}]`;
   }
 
   GetEquationString(): string {
@@ -264,32 +316,7 @@ class EquationTerm {
       modText = `−${Math.abs(this.Modifier)}`;
     }
 
-    return `${this._sign >= 0 ? "+" : "−"}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${modText}`;
-  }
-
-  private GetMinMaxValues(targetKeep: boolean = true): {
-    minValue: RollResult | undefined;
-    maxValue: RollResult | undefined;
-  } {
-    let minValue: RollResult | undefined = undefined;
-    let maxValue: RollResult | undefined = undefined;
-
-    for (const result of this._results) {
-      for (const value of result) {
-        if (value.Keep === targetKeep) {
-          minValue =
-            minValue === undefined || value.Value < minValue.Value
-              ? value
-              : minValue;
-          maxValue =
-            maxValue === undefined || value.Value > maxValue.Value
-              ? value
-              : maxValue;
-        }
-      }
-    }
-
-    return { minValue, maxValue };
+    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${modText}`;
   }
 }
 

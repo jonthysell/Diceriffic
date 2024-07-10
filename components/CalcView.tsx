@@ -53,39 +53,30 @@ interface CalcViewProps {
 }
 
 function CalcView(props: CalcViewProps) {
-  const [modeText, setModeText] = useState(
-    `+ ${props.calculator.CurrentRollType}`,
-  );
   const [resultText, setResultText] = useState(
     props.calculator.GetResultString(),
   );
   const [equationText, setEquationText] = useState(" ");
-  const [valuesText, setValuesText] = useState(" ");
+  const [rollsText, setRollsText] = useState(" ");
   const [modifierText, setModifierText] = useState(
     props.calculator.CurrentSign >= 0 ? "+" : "−",
   );
 
   const wrap = (f: () => void) => {
     f();
-    setModeText(
-      `${props.calculator.CurrentSign >= 0 ? "+" : "−"} ${props.calculator.CurrentRollType}`,
-    );
     setResultText(props.calculator.GetResultString());
-    setValuesText(props.calculator.GetValuesString());
+    setRollsText(props.calculator.GetRollsString());
     setEquationText(props.calculator.GetEquationString());
     setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "−");
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.modeRow}>
-        <Text style={styles.modeText}>{modeText}</Text>
-      </View>
       <View style={styles.textRow}>
         <Text style={styles.resultText}>{resultText}</Text>
       </View>
       <View style={styles.textRow}>
-        <Text style={styles.valuesText}>{valuesText}</Text>
+        <Text style={styles.valuesText}>{rollsText}</Text>
       </View>
       <View style={styles.textRow}>
         <Text style={styles.equationText}>{equationText}</Text>
@@ -145,12 +136,10 @@ function CalcView(props: CalcViewProps) {
             onPress={() => wrap(() => props.calculator.Delete())}
           />
           <CalcButton
-            text={RollType.Sum}
+            text="!"
             style={{ backgroundColor: "#cccccc" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() =>
-              wrap(() => (props.calculator.CurrentRollType = RollType.Sum))
-            }
+            onPress={() => wrap(() => props.calculator.ExplodeDice())}
           />
         </View>
       </View>
@@ -175,24 +164,16 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text={RollType.TakeHighest}
+            text="kh"
             style={{ backgroundColor: "#cc9999" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() =>
-              wrap(
-                () => (props.calculator.CurrentRollType = RollType.TakeHighest),
-              )
-            }
+            onPress={() => wrap(() => props.calculator.KeepHighest())}
           />
           <CalcButton
-            text={RollType.TakeLowest}
+            text="kl"
             style={{ backgroundColor: "#cc9999" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() =>
-              wrap(
-                () => (props.calculator.CurrentRollType = RollType.TakeLowest),
-              )
-            }
+            onPress={() => wrap(() => props.calculator.KeepLowest())}
           />
         </View>
       </View>
@@ -217,26 +198,16 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text={RollType.SumDropHighest}
+            text="dh"
             style={{ backgroundColor: "#99cc99" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() =>
-              wrap(
-                () =>
-                  (props.calculator.CurrentRollType = RollType.SumDropHighest),
-              )
-            }
+            onPress={() => wrap(() => props.calculator.DropHighest())}
           />
           <CalcButton
-            text={RollType.SumDropLowest}
+            text="dl"
             style={{ backgroundColor: "#99cc99" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() =>
-              wrap(
-                () =>
-                  (props.calculator.CurrentRollType = RollType.SumDropLowest),
-              )
-            }
+            onPress={() => wrap(() => props.calculator.DropLowest())}
           />
         </View>
       </View>
