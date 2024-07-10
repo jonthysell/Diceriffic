@@ -8,7 +8,6 @@ import CalcButton from "./CalcButton";
 
 import DieType from "../model/DieType";
 import Calculator from "../model/Calculator";
-import RollType from "../model/RollType";
 
 const styles = StyleSheet.create({
   container: {
