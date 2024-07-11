@@ -99,9 +99,15 @@ class Calculator {
     }
   }
 
+  get CanAddModifier(): boolean {
+    return this.LatestTerm !== undefined;
+  }
+
   AddModifier() {
-    if (this.LatestTerm) {
-      this.LatestTerm.Modifier += this.CurrentSign;
+    try {
+      this.LatestTerm!.Modifier += this.CurrentSign;
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -109,17 +115,41 @@ class Calculator {
     this.CurrentSign *= -1;
   }
 
+  get CanReEvaluate(): boolean {
+    return this.LatestTerm !== undefined;
+  }
+
   ReEvaluate() {
-    this._equation.ReEvaluate();
+    try {
+      this._equation.ReEvaluate();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  get CanClear(): boolean {
+    return true;
   }
 
   Clear() {
-    this._equation.Reset();
-    this.CurrentSign = 1;
+    try {
+      this._equation.Reset();
+      this.CurrentSign = 1;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  get CanDelete(): boolean {
+    return this.LatestTerm !== undefined;
   }
 
   Delete() {
-    this._equation.RemoveTerm();
+    try {
+      this._equation.RemoveTerm();
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

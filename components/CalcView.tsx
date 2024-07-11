@@ -100,6 +100,7 @@ function CalcView(props: CalcViewProps) {
             text="C"
             style={{ backgroundColor: "#ff0000" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanClear}
             onPress={() => wrap(() => props.calculator.Clear())}
           />
         </View>
@@ -128,6 +129,7 @@ function CalcView(props: CalcViewProps) {
             text="⌫"
             style={{ backgroundColor: "#999999" }}
             textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanDelete}
             onPress={() => wrap(() => props.calculator.Delete())}
           />
           <CalcButton
@@ -226,6 +228,7 @@ function CalcView(props: CalcViewProps) {
         />
         <CalcButton
           text={`${modifierText}1`}
+          enabled={props.calculator.CanAddModifier}
           onPress={() => wrap(() => props.calculator.AddModifier())}
         />
         <View style={styles.modeColumn}>
@@ -242,6 +245,7 @@ function CalcView(props: CalcViewProps) {
           text="⟳"
           style={{ backgroundColor: "#999999" }}
           textStyle={{ color: "#ffffff", fontSize: 36 }}
+          enabled={props.calculator.CanReEvaluate}
           onPress={() => wrap(() => props.calculator.ReEvaluate())}
         />
       </View>
