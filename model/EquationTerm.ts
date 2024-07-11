@@ -272,22 +272,28 @@ class EquationTerm {
     this._results.forEach((r) => {
       text += ",";
       if (r.length === 1) {
+        // Single roll
         text += `${r.at(0)!.Value}`;
       } else if (r.length > 1) {
+        // Exploded roll
         let innerText = "";
         r.forEach((v) => {
           innerText += `,${v.Value}`;
         });
+
         if (innerText.startsWith(",")) {
           innerText = innerText.substring(1);
         }
+
         text += `(${innerText})`;
       }
     });
+
     if (text.startsWith(",")) {
       text = text.substring(1);
     }
-    return `${this._sign >= 0 ? " + " : " − "}[${text}]`;
+
+    return `${this._sign >= 0 ? " + " : " − "}[${text}]${this.modifierText()}`;
   }
 
   GetEquationString(): string {
@@ -309,14 +315,17 @@ class EquationTerm {
       keepText += `kh${this._keepHighest}`;
     }
 
+    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}`;
+  }
+
+  private modifierText(): string {
     let modText = "";
     if (this.Modifier > 0) {
       modText = `+${this.Modifier}`;
     } else if (this.Modifier < 0) {
       modText = `−${Math.abs(this.Modifier)}`;
     }
-
-    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${modText}`;
+    return modText;
   }
 }
 
