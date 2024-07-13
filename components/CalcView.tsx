@@ -248,7 +248,8 @@ function CalcView(props: CalcViewProps) {
           style={{ backgroundColor: "#999999" }}
           textStyle={{
             color: "#ffffff",
-            fontSize: 48,
+            fontSize: 64,
+            marginTop: -16,
           }}
           enabled={props.calculator.CanReEvaluate}
           onPress={() => wrap(() => props.calculator.ReEvaluate())}
