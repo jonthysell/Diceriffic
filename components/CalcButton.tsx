@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f9f9f9",
-    borderWidth: 4,
+    borderWidth: 1,
     borderColor: "#eeeeee",
     borderRadius: 10,
     margin: 1,
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 26,
     fontWeight: "bold",
   },
 });

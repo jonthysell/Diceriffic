@@ -28,10 +28,12 @@ const styles = StyleSheet.create({
   equationText: {
     padding: 2,
     fontSize: 18,
+    color: "#666666",
   },
   rollsText: {
     padding: 2,
     fontSize: 14,
+    color: "#666666",
   },
   buttonRow: {
     flex: 1,
@@ -244,7 +246,10 @@ function CalcView(props: CalcViewProps) {
         <CalcButton
           text="⟳"
           style={{ backgroundColor: "#999999" }}
-          textStyle={{ color: "#ffffff", fontSize: 36 }}
+          textStyle={{
+            color: "#ffffff",
+            fontSize: 48,
+          }}
           enabled={props.calculator.CanReEvaluate}
           onPress={() => wrap(() => props.calculator.ReEvaluate())}
         />
