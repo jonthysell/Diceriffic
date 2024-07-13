@@ -1,4 +1,4 @@
-![Diceriffic Screenshot](./.github/screenshot1.png)
+![Diceriffic Screenshot](./.github/screenshot1.jpg)
 
 # Diceriffic #
 
