@@ -27,8 +27,8 @@ class EquationTerm {
   private _dropHighest: number = 0;
   private _keepLowest: number = 0;
   private _keepHighest: number = 0;
-  private _successGTE: number = 0;
-  private _successLTE: number = 0;
+  private _targetGTE: number = 0;
+  private _targetLTE: number = 0;
 
   private _results: RollResult[][];
 
@@ -70,12 +70,12 @@ class EquationTerm {
     return this._keepHighest > 0 || this._keepLowest > 0;
   }
 
-  get HasSuccessGTE(): boolean {
-    return this._successGTE > 0;
+  get HasTargetGTE(): boolean {
+    return this._targetGTE > 0;
   }
 
-  get HasSuccessLTE(): boolean {
-    return this._successLTE > 0;
+  get HasTargetLTE(): boolean {
+    return this._targetLTE > 0;
   }
 
   ReEvaluate(): void {
@@ -253,49 +253,49 @@ class EquationTerm {
     return { minValue, maxValue };
   }
 
-  SuccessGTE(): void {
+  TargetGTE(): void {
     if (this.HasDrops) {
       throw new Error("Unable to count success gte after drop operation.");
     }
     if (this.HasKeeps) {
       throw new Error("Unable to count success gte after keep operation.");
     }
-    if (this.HasSuccessLTE) {
+    if (this.HasTargetLTE) {
       throw new Error(
         "Unable to count success gte after count success lte operation.",
       );
     }
 
-    switch (this._successGTE) {
+    switch (this._targetGTE) {
       case 0:
-        this._successGTE = maxValue(this.DieType);
+        this._targetGTE = maxValue(this.DieType);
         break;
       case 1:
         break;
       default:
-        this._successGTE--;
+        this._targetGTE--;
         break;
     }
   }
 
-  SuccessLTE(): void {
+  TargetLTE(): void {
     if (this.HasDrops) {
       throw new Error("Unable to count success lte after drop operation.");
     }
     if (this.HasKeeps) {
       throw new Error("Unable to count success lte after keep operation.");
     }
-    if (this.HasSuccessGTE) {
+    if (this.HasTargetGTE) {
       throw new Error(
         "Unable to count success lte after count success gte operation.",
       );
     }
 
-    switch (this._successLTE) {
+    switch (this._targetLTE) {
       case maxValue(this.DieType):
         break;
       default:
-        this._successLTE++;
+        this._targetLTE++;
         break;
     }
   }
@@ -303,18 +303,18 @@ class EquationTerm {
   GetTotal(): number {
     let total = 0;
 
-    if (this.HasSuccessGTE) {
+    if (this.HasTargetGTE) {
       this._results.forEach((r) =>
         r.forEach((v) => {
-          if (v.Keep && v.Value + this.Modifier >= this._successGTE) {
+          if (v.Keep && v.Value + this.Modifier >= this._targetGTE) {
             total++;
           }
         }),
       );
-    } else if (this.HasSuccessLTE) {
+    } else if (this.HasTargetLTE) {
       this._results.forEach((r) =>
         r.forEach((v) => {
-          if (v.Keep && v.Value + this.Modifier <= this._successLTE) {
+          if (v.Keep && v.Value + this.Modifier <= this._targetLTE) {
             total++;
           }
         }),
@@ -391,7 +391,15 @@ class EquationTerm {
       keepText += `kh${this._keepHighest}`;
     }
 
-    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}`;
+    let targetText = "";
+    if (this._targetGTE > 0) {
+      targetText += `>${this._targetGTE}`;
+    }
+    if (this._targetLTE > 0) {
+      targetText += `<${this._targetLTE}`;
+    }
+
+    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}${targetText}`;
   }
 
   private modifierText(): string {

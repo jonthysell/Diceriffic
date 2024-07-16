@@ -245,7 +245,7 @@ function CalcView(props: CalcViewProps) {
       <View style={styles.buttonRow}>
         <CalcButton
           text="⟳"
-          style={{ backgroundColor: "#999999" }}
+          style={{ backgroundColor: "#999999", flex: 3 }}
           textStyle={{
             color: "#ffffff",
             fontSize: 64,
@@ -254,6 +254,22 @@ function CalcView(props: CalcViewProps) {
           enabled={props.calculator.CanReEvaluate}
           onPress={() => wrap(() => props.calculator.ReEvaluate())}
         />
+        <View style={styles.modeColumn}>
+          <CalcButton
+            text=">"
+            style={{ backgroundColor: "#99cc99" }}
+            textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanTargetGTE}
+            onPress={() => wrap(() => props.calculator.TargetGTE())}
+          />
+          <CalcButton
+            text="<"
+            style={{ backgroundColor: "#99cc99" }}
+            textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanTargetLTE}
+            onPress={() => wrap(() => props.calculator.TargetLTE())}
+          />
+        </View>
       </View>
     </View>
   );

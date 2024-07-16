@@ -99,6 +99,30 @@ class Calculator {
     }
   }
 
+  get CanTargetGTE(): boolean {
+    return this.LatestTerm?.HasTargetLTE === false;
+  }
+
+  TargetGTE() {
+    try {
+      this.LatestTerm?.TargetGTE();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  get CanTargetLTE(): boolean {
+    return this.LatestTerm?.HasTargetGTE === false;
+  }
+
+  TargetLTE() {
+    try {
+      this.LatestTerm?.TargetLTE();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   get CanAddModifier(): boolean {
     return this.LatestTerm !== undefined;
   }
