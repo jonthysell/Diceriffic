@@ -27,6 +27,8 @@ class EquationTerm {
   private _dropHighest: number = 0;
   private _keepLowest: number = 0;
   private _keepHighest: number = 0;
+  private _successGTE: number = 0;
+  private _successLTE: number = 0;
 
   private _results: RollResult[][];
 
@@ -66,6 +68,14 @@ class EquationTerm {
 
   get HasKeeps(): boolean {
     return this._keepHighest > 0 || this._keepLowest > 0;
+  }
+
+  get HasSuccessGTE(): boolean {
+    return this._successGTE > 0;
+  }
+
+  get HasSuccessLTE(): boolean {
+    return this._successLTE > 0;
   }
 
   ReEvaluate(): void {
@@ -243,16 +253,82 @@ class EquationTerm {
     return { minValue, maxValue };
   }
 
+  SuccessGTE(): void {
+    if (this.HasDrops) {
+      throw new Error("Unable to count success gte after drop operation.");
+    }
+    if (this.HasKeeps) {
+      throw new Error("Unable to count success gte after keep operation.");
+    }
+    if (this.HasSuccessLTE) {
+      throw new Error(
+        "Unable to count success gte after count success lte operation.",
+      );
+    }
+
+    switch (this._successGTE) {
+      case 0:
+        this._successGTE = maxValue(this.DieType);
+        break;
+      case 1:
+        break;
+      default:
+        this._successGTE--;
+        break;
+    }
+  }
+
+  SuccessLTE(): void {
+    if (this.HasDrops) {
+      throw new Error("Unable to count success lte after drop operation.");
+    }
+    if (this.HasKeeps) {
+      throw new Error("Unable to count success lte after keep operation.");
+    }
+    if (this.HasSuccessGTE) {
+      throw new Error(
+        "Unable to count success lte after count success gte operation.",
+      );
+    }
+
+    switch (this._successLTE) {
+      case maxValue(this.DieType):
+        break;
+      default:
+        this._successLTE++;
+        break;
+    }
+  }
+
   GetTotal(): number {
     let total = 0;
-    this._results.forEach((r) =>
-      r.forEach((v) => {
-        if (v.Keep) {
-          total += v.Value;
-        }
-      }),
-    );
-    total += this.Modifier;
+
+    if (this.HasSuccessGTE) {
+      this._results.forEach((r) =>
+        r.forEach((v) => {
+          if (v.Keep && v.Value + this.Modifier >= this._successGTE) {
+            total++;
+          }
+        }),
+      );
+    } else if (this.HasSuccessLTE) {
+      this._results.forEach((r) =>
+        r.forEach((v) => {
+          if (v.Keep && v.Value + this.Modifier <= this._successLTE) {
+            total++;
+          }
+        }),
+      );
+    } else {
+      this._results.forEach((r) =>
+        r.forEach((v) => {
+          if (v.Keep) {
+            total += v.Value;
+          }
+        }),
+      );
+      total += this.Modifier;
+    }
 
     return this._sign * total;
   }
