@@ -100,7 +100,11 @@ class Calculator {
   }
 
   get CanTargetGTE(): boolean {
-    return this.LatestTerm?.HasTargetLTE === false;
+    return (
+      this.LatestTerm?.HasTargetLTE === false &&
+      this.LatestTerm?.HasDrops === false &&
+      this.LatestTerm?.HasKeeps === false
+    );
   }
 
   TargetGTE() {
@@ -112,7 +116,11 @@ class Calculator {
   }
 
   get CanTargetLTE(): boolean {
-    return this.LatestTerm?.HasTargetGTE === false;
+    return (
+      this.LatestTerm?.HasTargetGTE === false &&
+      this.LatestTerm?.HasDrops === false &&
+      this.LatestTerm?.HasKeeps === false
+    );
   }
 
   TargetLTE() {

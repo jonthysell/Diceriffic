@@ -235,10 +235,18 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text="+ / −"
+            text=">"
             style={{ backgroundColor: "#9999cc" }}
             textStyle={{ color: "#ffffff" }}
-            onPress={() => wrap(() => props.calculator.ToggleSign())}
+            enabled={props.calculator.CanTargetGTE}
+            onPress={() => wrap(() => props.calculator.TargetGTE())}
+          />
+          <CalcButton
+            text="<"
+            style={{ backgroundColor: "#9999cc" }}
+            textStyle={{ color: "#ffffff" }}
+            enabled={props.calculator.CanTargetLTE}
+            onPress={() => wrap(() => props.calculator.TargetLTE())}
           />
         </View>
       </View>
@@ -256,18 +264,10 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text=">"
-            style={{ backgroundColor: "#99cc99" }}
+            text="+ / −"
+            style={{ backgroundColor: "#999999" }}
             textStyle={{ color: "#ffffff" }}
-            enabled={props.calculator.CanTargetGTE}
-            onPress={() => wrap(() => props.calculator.TargetGTE())}
-          />
-          <CalcButton
-            text="<"
-            style={{ backgroundColor: "#99cc99" }}
-            textStyle={{ color: "#ffffff" }}
-            enabled={props.calculator.CanTargetLTE}
-            onPress={() => wrap(() => props.calculator.TargetLTE())}
+            onPress={() => wrap(() => props.calculator.ToggleSign())}
           />
         </View>
       </View>

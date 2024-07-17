@@ -70,6 +70,10 @@ class EquationTerm {
     return this._keepHighest > 0 || this._keepLowest > 0;
   }
 
+  get HasTarget(): boolean {
+    return this.HasTargetGTE || this.HasTargetLTE;
+  }
+
   get HasTargetGTE(): boolean {
     return this._targetGTE > 0;
   }
@@ -255,15 +259,13 @@ class EquationTerm {
 
   TargetGTE(): void {
     if (this.HasDrops) {
-      throw new Error("Unable to count success gte after drop operation.");
+      throw new Error("Unable to target gte after drop operation.");
     }
     if (this.HasKeeps) {
-      throw new Error("Unable to count success gte after keep operation.");
+      throw new Error("Unable to target gte after keep operation.");
     }
     if (this.HasTargetLTE) {
-      throw new Error(
-        "Unable to count success gte after count success lte operation.",
-      );
+      throw new Error("Unable to target gte after target lte operation.");
     }
 
     switch (this._targetGTE) {
@@ -280,15 +282,13 @@ class EquationTerm {
 
   TargetLTE(): void {
     if (this.HasDrops) {
-      throw new Error("Unable to count success lte after drop operation.");
+      throw new Error("Unable to target lte after drop operation.");
     }
     if (this.HasKeeps) {
-      throw new Error("Unable to count success lte after keep operation.");
+      throw new Error("Unable to target lte after keep operation.");
     }
     if (this.HasTargetGTE) {
-      throw new Error(
-        "Unable to count success lte after count success gte operation.",
-      );
+      throw new Error("Unable to target lte after target gte operation.");
     }
 
     switch (this._targetLTE) {
@@ -349,12 +349,12 @@ class EquationTerm {
       text += ",";
       if (r.length === 1) {
         // Single roll
-        text += `${r.at(0)!.Value}`;
+        text += `${r.at(0)!.Value}${this.HasTarget ? this.modifierText() : ""}`;
       } else if (r.length > 1) {
         // Exploded roll
         let innerText = "";
         r.forEach((v) => {
-          innerText += `,${v.Value}`;
+          innerText += `,${v.Value}${this.HasTarget ? this.modifierText() : ""}`;
         });
 
         if (innerText.startsWith(",")) {
@@ -369,11 +369,13 @@ class EquationTerm {
       text = text.substring(1);
     }
 
-    return `${this._sign >= 0 ? " + " : " − "}[${text}]${this.modifierText()}`;
+    return `${this._sign >= 0 ? " + " : " − "}[${text}]${this.HasTarget ? "" : this.modifierText()}`;
   }
 
   GetEquationString(): string {
     const explodeText = this.HasExploded ? "!" : "";
+
+    let prefixText = "";
 
     let dropText = "";
     if (this._dropLowest > 0) {
@@ -393,13 +395,15 @@ class EquationTerm {
 
     let targetText = "";
     if (this._targetGTE > 0) {
-      targetText += `>${this._targetGTE}`;
+      prefixText = this.Modifier !== 0 ? "{" : "";
+      targetText += `${this.Modifier !== 0 ? "}" : ""}>${this._targetGTE}`;
     }
     if (this._targetLTE > 0) {
-      targetText += `<${this._targetLTE}`;
+      prefixText = this.Modifier !== 0 ? "{" : "";
+      targetText += `${this.Modifier !== 0 ? "}" : ""}<${this._targetLTE}`;
     }
 
-    return `${this._sign >= 0 ? " + " : " − "}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}${targetText}`;
+    return `${this._sign >= 0 ? " + " : " − "}${prefixText}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}${targetText}`;
   }
 
   private modifierText(): string {
