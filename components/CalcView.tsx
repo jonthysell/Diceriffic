@@ -70,13 +70,23 @@ function CalcView(props: CalcViewProps) {
   return (
     <View style={styles.container}>
       <View style={styles.textRow}>
-        <Text style={styles.equationText}>{equationText}</Text>
+        <Text
+          style={styles.equationText}
+          numberOfLines={1}
+          ellipsizeMode="head"
+        >
+          {equationText}
+        </Text>
       </View>
       <View style={styles.textRow}>
-        <Text style={styles.rollsText}>{rollsText}</Text>
+        <Text style={styles.rollsText} numberOfLines={1} ellipsizeMode="head">
+          {rollsText}
+        </Text>
       </View>
       <View style={styles.textRow}>
-        <Text style={styles.resultText}>{resultText}</Text>
+        <Text style={styles.resultText} numberOfLines={1}>
+          {resultText}
+        </Text>
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
