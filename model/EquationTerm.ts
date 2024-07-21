@@ -396,11 +396,11 @@ class EquationTerm {
     let targetText = "";
     if (this._targetGTE > 0) {
       prefixText = this.Modifier !== 0 ? "{" : "";
-      targetText += `${this.Modifier !== 0 ? "}" : ""}>${this._targetGTE}`;
+      targetText += `${this.Modifier !== 0 ? "}" : ""}≥${this._targetGTE}`;
     }
     if (this._targetLTE > 0) {
       prefixText = this.Modifier !== 0 ? "{" : "";
-      targetText += `${this.Modifier !== 0 ? "}" : ""}<${this._targetLTE}`;
+      targetText += `${this.Modifier !== 0 ? "}" : ""}≤${this._targetLTE}`;
     }
 
     return `${this._sign >= 0 ? " + " : " − "}${prefixText}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}${targetText}`;

@@ -245,14 +245,14 @@ function CalcView(props: CalcViewProps) {
         />
         <View style={styles.modeColumn}>
           <CalcButton
-            text=">"
+            text="≥"
             style={{ backgroundColor: "#9999cc" }}
             textStyle={{ color: "#ffffff" }}
             enabled={props.calculator.CanTargetGTE}
             onPress={() => wrap(() => props.calculator.TargetGTE())}
           />
           <CalcButton
-            text="<"
+            text="≤"
             style={{ backgroundColor: "#9999cc" }}
             textStyle={{ color: "#ffffff" }}
             enabled={props.calculator.CanTargetLTE}
