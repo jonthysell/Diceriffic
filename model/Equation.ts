@@ -3,6 +3,8 @@
 
 import EquationTerm from "./EquationTerm";
 
+const MaxTerms = 255;
+
 class Equation {
   private _terms: EquationTerm[];
 
@@ -10,11 +12,18 @@ class Equation {
     this._terms = [];
   }
 
+  get TermCount(): number {
+    return this._terms.length;
+  }
+
   get LatestTerm(): EquationTerm | undefined {
     return this._terms.at(-1);
   }
 
   AddTerm(term: EquationTerm) {
+    if (this._terms.length >= MaxTerms) {
+      throw new Error(`Unable to add more than ${MaxTerms} terms.`);
+    }
     this._terms.push(term);
   }
 

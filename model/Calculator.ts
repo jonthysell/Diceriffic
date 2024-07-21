@@ -31,17 +31,21 @@ class Calculator {
   }
 
   AddDie(dieType: DieType): void {
-    if (
-      this.LatestTerm &&
-      this.LatestTerm.Sign === this.CurrentSign &&
-      this.LatestTerm.DieType === dieType &&
-      this.CanExplode
-    ) {
-      this.LatestTerm.AddDie();
-    } else {
-      const newTerm = new EquationTerm(this.CurrentSign, dieType);
-      newTerm.AddDie();
-      this._equation.AddTerm(newTerm);
+    try {
+      if (
+        this.LatestTerm &&
+        this.LatestTerm.Sign === this.CurrentSign &&
+        this.LatestTerm.DieType === dieType &&
+        this.CanExplode
+      ) {
+        this.LatestTerm.AddDie();
+      } else {
+        const newTerm = new EquationTerm(this.CurrentSign, dieType);
+        newTerm.AddDie();
+        this._equation.AddTerm(newTerm);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
