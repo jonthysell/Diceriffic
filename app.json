@@ -19,7 +19,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jonthysell.diceriffic"
+      "package": "com.jonthysell.diceriffic",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
