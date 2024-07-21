@@ -145,7 +145,7 @@ function CalcView(props: CalcViewProps) {
             onPress={() => wrap(() => props.calculator.Delete())}
           />
           <CalcButton
-            text="!"
+            text="! / !!"
             style={{ backgroundColor: "#cccccc" }}
             textStyle={{ color: "#ffffff" }}
             enabled={props.calculator.CanExplode}
