@@ -120,6 +120,9 @@ class EquationTerm {
     if (this.HasKeeps) {
       throw new Error("Unable to add die after keep operation.");
     }
+    if (this.HasTarget) {
+      throw new Error("Unable to add die after target operation.");
+    }
 
     this.applyAddDie();
   }
@@ -167,6 +170,9 @@ class EquationTerm {
     if (this.HasKeeps) {
       throw new Error("Unable to drop dice after keep operation.");
     }
+    if (this.HasTarget) {
+      throw new Error("Unable to drop dice after target operation.");
+    }
 
     this._dropLowest++;
     this.applyDrops();
@@ -175,6 +181,9 @@ class EquationTerm {
   DropHighest(): void {
     if (this.HasKeeps) {
       throw new Error("Unable to drop dice after keep operation.");
+    }
+    if (this.HasTarget) {
+      throw new Error("Unable to drop dice after target operation.");
     }
 
     this._dropHighest++;
@@ -205,6 +214,9 @@ class EquationTerm {
     if (this.HasDrops) {
       throw new Error("Unable to keep dice after drop operation.");
     }
+    if (this.HasTarget) {
+      throw new Error("Unable to keep dice after target operation.");
+    }
 
     this._keepLowest++;
     this.applyKeeps();
@@ -213,6 +225,9 @@ class EquationTerm {
   KeepHighest(): void {
     if (this.HasDrops) {
       throw new Error("Unable to keep dice after drop operation.");
+    }
+    if (this.HasTarget) {
+      throw new Error("Unable to keep dice after target operation.");
     }
 
     this._keepHighest++;
@@ -374,19 +389,18 @@ class EquationTerm {
       text += ",";
       if (r.length === 1) {
         // Single roll
-        text += `${r.at(0)!.Value}`;
-        if (this.HasTarget && this.Modifier !== 0) {
-          text += `${this.modifierText()}=${r.at(0)!.Value + this.Modifier}`;
-        }
+        const value = r.at(0)!.Value + (this.HasTarget ? this.Modifier : 0);
+        text += `${value}`;
       } else if (r.length > 1) {
         // Exploded roll
         let innerText = "";
         let innerValue = 0;
         r.forEach((v) => {
+          const value = v.Value + (this.HasTarget ? this.Modifier : 0);
           if (v.Keep) {
-            innerValue += v.Value + (this.HasTarget ? this.Modifier : 0);
+            innerValue += value;
           }
-          innerText += `,${v.Value}${this.HasTarget && this.Modifier !== 0 ? `${this.modifierText()}=${v.Value + this.Modifier}` : ""}`;
+          innerText += `,${value}`;
         });
 
         if (innerText.startsWith(",")) {
@@ -394,7 +408,7 @@ class EquationTerm {
         }
 
         if (this._explode === 2) {
-          innerText = `(${innerText})=${innerValue}`;
+          innerText = `(${innerValue})`;
         } else {
           innerText = `(${innerText})`;
         }
