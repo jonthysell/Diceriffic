@@ -3,7 +3,7 @@
 
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import Calculator from "../model/Calculator";
 import CalcView from "./CalcView";
@@ -18,7 +18,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const calculator = new Calculator();
+const calculator = new Calculator((err) => {
+  console.log(err);
+  Alert.alert("Error", (err as Error)?.message, undefined, {
+    cancelable: true,
+  });
+});
 
 function MainView() {
   return (

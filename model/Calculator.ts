@@ -7,11 +7,13 @@ import EquationTerm from "./EquationTerm";
 
 class Calculator {
   private readonly _equation: Equation;
+  private readonly _errorHandler?: (err: any) => void;
 
   CurrentSign: -1 | 1 = 1;
 
-  constructor() {
+  constructor(errorHandler?: (err: any) => void) {
     this._equation = new Equation();
+    this._errorHandler = errorHandler ?? console.log;
   }
 
   GetEquationString(): string {
@@ -45,7 +47,7 @@ class Calculator {
         this._equation.AddTerm(newTerm);
       }
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -59,7 +61,7 @@ class Calculator {
     try {
       this.LatestTerm?.ExplodeDice();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -71,7 +73,7 @@ class Calculator {
     try {
       this.LatestTerm?.DropLowest();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -79,7 +81,7 @@ class Calculator {
     try {
       this.LatestTerm?.DropHighest();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -91,7 +93,7 @@ class Calculator {
     try {
       this.LatestTerm?.KeepLowest();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -99,7 +101,7 @@ class Calculator {
     try {
       this.LatestTerm?.KeepHighest();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -115,7 +117,7 @@ class Calculator {
     try {
       this.LatestTerm?.TargetGTE();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -131,7 +133,7 @@ class Calculator {
     try {
       this.LatestTerm?.TargetLTE();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -143,7 +145,7 @@ class Calculator {
     try {
       this.LatestTerm!.Modifier += this.CurrentSign;
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -159,7 +161,7 @@ class Calculator {
     try {
       this._equation.ReEvaluate();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -172,7 +174,7 @@ class Calculator {
       this._equation.Reset();
       this.CurrentSign = 1;
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 
@@ -184,7 +186,7 @@ class Calculator {
     try {
       this._equation.RemoveTerm();
     } catch (err) {
-      console.log(err);
+      this._errorHandler?.(err);
     }
   }
 }

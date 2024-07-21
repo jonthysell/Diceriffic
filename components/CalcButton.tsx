@@ -42,7 +42,7 @@ function CalcButton(props: CalcButtonProps) {
     <TouchableHighlight
       style={[styles.button, props.style]}
       underlayColor="#666666"
-      disabled={props.enabled === false}
+      //disabled={props.enabled === false}
       onPress={() => props.onPress?.()}
       onPressIn={() => props.onPressIn?.()}
       onPressOut={() => props.onPressOut?.()}
