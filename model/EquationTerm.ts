@@ -22,7 +22,7 @@ class EquationTerm {
   private readonly _dieType: DieType;
   private _modifier: number = 0;
 
-  private _explode: boolean = false;
+  private _explode: 0 | 1 | 2 = 0;
   private _dropLowest: number = 0;
   private _dropHighest: number = 0;
   private _keepLowest: number = 0;
@@ -58,8 +58,12 @@ class EquationTerm {
     this._modifier = value;
   }
 
+  get HasOperation(): boolean {
+    return this.HasExploded || this.HasDrops || this.HasKeeps || this.HasTarget;
+  }
+
   get HasExploded(): boolean {
-    return this._explode;
+    return this._explode > 0;
   }
 
   get HasDrops(): boolean {
@@ -125,9 +129,6 @@ class EquationTerm {
   }
 
   ExplodeDice(): void {
-    if (this.HasExploded) {
-      throw new Error("Unable to explode dice more than once.");
-    }
     if (this.HasDrops) {
       throw new Error("Unable to explode dice after drop operation.");
     }
@@ -135,8 +136,18 @@ class EquationTerm {
       throw new Error("Unable to explode dice after keep operation.");
     }
 
-    this._explode = true;
-    this.applyExplode();
+    switch (this._explode) {
+      case 0:
+        this._explode = 1;
+        this.applyExplode();
+        break;
+      case 1:
+        this._explode = 2;
+        break;
+      case 2:
+        this._explode = 1;
+        break;
+    }
   }
 
   private applyExplode(): void {
@@ -268,16 +279,7 @@ class EquationTerm {
       throw new Error("Unable to target gte after target lte operation.");
     }
 
-    switch (this._targetGTE) {
-      case 0:
-        this._targetGTE = maxValue(this.DieType);
-        break;
-      case 1:
-        break;
-      default:
-        this._targetGTE--;
-        break;
-    }
+    this._targetGTE++;
   }
 
   TargetLTE(): void {
@@ -291,35 +293,58 @@ class EquationTerm {
       throw new Error("Unable to target lte after target gte operation.");
     }
 
-    switch (this._targetLTE) {
-      case maxValue(this.DieType):
-        break;
-      default:
-        this._targetLTE++;
-        break;
-    }
+    this._targetLTE++;
   }
 
   GetTotal(): number {
     let total = 0;
 
     if (this.HasTargetGTE) {
-      this._results.forEach((r) =>
-        r.forEach((v) => {
-          if (v.Keep && v.Value + this.Modifier >= this._targetGTE) {
+      this._results.forEach((r) => {
+        if (this._explode === 2) {
+          // Compound explode + GTE
+          let innerValue = 0;
+          r.forEach((v) => {
+            if (v.Keep) {
+              innerValue += v.Value + this.Modifier;
+            }
+          });
+          if (innerValue >= this._targetGTE) {
             total++;
           }
-        }),
-      );
+        } else {
+          // Regular GTE
+          r.forEach((v) => {
+            if (v.Keep && v.Value + this.Modifier >= this._targetGTE) {
+              total++;
+            }
+          });
+        }
+      });
     } else if (this.HasTargetLTE) {
-      this._results.forEach((r) =>
-        r.forEach((v) => {
-          if (v.Keep && v.Value + this.Modifier <= this._targetLTE) {
+      this._results.forEach((r) => {
+        if (this._explode === 2) {
+          // Compound explode + LTE
+          let innerValue = 0;
+          r.forEach((v) => {
+            if (v.Keep) {
+              innerValue += v.Value + this.Modifier;
+            }
+          });
+          if (innerValue <= this._targetLTE) {
             total++;
           }
-        }),
-      );
+        } else {
+          // Regular LTE
+          r.forEach((v) => {
+            if (v.Keep && v.Value + this.Modifier <= this._targetLTE) {
+              total++;
+            }
+          });
+        }
+      });
     } else {
+      // No target
       this._results.forEach((r) =>
         r.forEach((v) => {
           if (v.Keep) {
@@ -349,19 +374,32 @@ class EquationTerm {
       text += ",";
       if (r.length === 1) {
         // Single roll
-        text += `${r.at(0)!.Value}${this.HasTarget ? this.modifierText() : ""}`;
+        text += `${r.at(0)!.Value}`;
+        if (this.HasTarget && this.Modifier !== 0) {
+          text += `${this.modifierText()}=${r.at(0)!.Value + this.Modifier}`;
+        }
       } else if (r.length > 1) {
         // Exploded roll
         let innerText = "";
+        let innerValue = 0;
         r.forEach((v) => {
-          innerText += `,${v.Value}${this.HasTarget ? this.modifierText() : ""}`;
+          if (v.Keep) {
+            innerValue += v.Value + (this.HasTarget ? this.Modifier : 0);
+          }
+          innerText += `,${v.Value}${this.HasTarget && this.Modifier !== 0 ? `${this.modifierText()}=${v.Value + this.Modifier}` : ""}`;
         });
 
         if (innerText.startsWith(",")) {
           innerText = innerText.substring(1);
         }
 
-        text += `(${innerText})`;
+        if (this._explode === 2) {
+          innerText = `(${innerText})=${innerValue}`;
+        } else {
+          innerText = `(${innerText})`;
+        }
+
+        text += innerText;
       }
     });
 
@@ -373,9 +411,9 @@ class EquationTerm {
   }
 
   GetEquationString(): string {
-    const explodeText = this.HasExploded ? "!" : "";
-
     let prefixText = "";
+
+    const explodeText = "!".repeat(this._explode);
 
     let dropText = "";
     if (this._dropLowest > 0) {
@@ -395,12 +433,9 @@ class EquationTerm {
 
     let targetText = "";
     if (this._targetGTE > 0) {
-      prefixText = this.Modifier !== 0 ? "{" : "";
-      targetText += `${this.Modifier !== 0 ? "}" : ""}≥${this._targetGTE}`;
-    }
-    if (this._targetLTE > 0) {
-      prefixText = this.Modifier !== 0 ? "{" : "";
-      targetText += `${this.Modifier !== 0 ? "}" : ""}≤${this._targetLTE}`;
+      targetText += `≥${this._targetGTE}`;
+    } else if (this._targetLTE > 0) {
+      targetText += `≤${this._targetLTE}`;
     }
 
     return `${this._sign >= 0 ? " + " : " − "}${prefixText}${this.NumDice}d${dieValue(this.DieType)}${explodeText}${dropText}${keepText}${this.modifierText()}${targetText}`;

@@ -38,7 +38,7 @@ class Calculator {
         this.LatestTerm &&
         this.LatestTerm.Sign === this.CurrentSign &&
         this.LatestTerm.DieType === dieType &&
-        this.CanExplode
+        !this.LatestTerm.HasOperation
       ) {
         this.LatestTerm.AddDie();
       } else {
