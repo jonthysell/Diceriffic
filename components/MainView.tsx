@@ -3,7 +3,9 @@
 
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
-import { Alert, StyleSheet, View } from "react-native";
+
+import { StyleSheet, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 import Calculator from "../model/Calculator";
 import CalcView from "./CalcView";
@@ -20,8 +22,11 @@ const styles = StyleSheet.create({
 
 const calculator = new Calculator((err) => {
   console.log(err);
-  Alert.alert("Error", (err as Error)?.message, undefined, {
-    cancelable: true,
+  Toast.show({
+    type: "error",
+    text1: "Error",
+    text2: (err as Error)?.message,
+    topOffset: Constants.statusBarHeight + 8,
   });
 });
 
@@ -30,6 +35,7 @@ function MainView() {
     <View style={styles.container}>
       <CalcView calculator={calculator} />
       <StatusBar style="auto" />
+      <Toast />
     </View>
   );
 }
