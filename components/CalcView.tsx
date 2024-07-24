@@ -13,27 +13,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  textRow: {
-    padding: 2,
-    alignItems: "flex-end",
-  },
-  modeRow: {
-    padding: 5,
-    alignItems: "center",
-  },
-  resultText: {
-    padding: 3,
-    fontSize: 36,
+  topPanel: {
+    flex: 1,
+    flexDirection: "column",
   },
   equationText: {
-    padding: 2,
     fontSize: 18,
+    textAlign: "right",
     color: "#666666",
   },
   rollsText: {
-    padding: 2,
     fontSize: 14,
+    textAlign: "right",
     color: "#666666",
+  },
+  resultText: {
+    fontSize: 36,
+    textAlign: "right",
   },
   buttonRow: {
     flex: 1,
@@ -69,7 +65,7 @@ function CalcView(props: CalcViewProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.textRow}>
+      <View style={styles.topPanel}>
         <Text
           style={styles.equationText}
           numberOfLines={1}
@@ -77,13 +73,9 @@ function CalcView(props: CalcViewProps) {
         >
           {equationText}
         </Text>
-      </View>
-      <View style={styles.textRow}>
         <Text style={styles.rollsText} numberOfLines={1} ellipsizeMode="head">
           {rollsText}
         </Text>
-      </View>
-      <View style={styles.textRow}>
         <Text style={styles.resultText} numberOfLines={1}>
           {resultText}
         </Text>
