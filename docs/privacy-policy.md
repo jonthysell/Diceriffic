@@ -1,4 +1,3 @@
-
 **Privacy Policy**
 
 This privacy policy applies to the Diceriffic app (hereby referred to as "Application") for mobile devices that was created by Jon Thysell (hereby referred to as "Service Provider") as an Open Source service. This service is intended for use "AS IS".
