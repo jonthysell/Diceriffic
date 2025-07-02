@@ -13,8 +13,13 @@ function maxValue(dieType: DieType): number {
 }
 
 function rollDie(dieType: DieType): number {
-  const max = maxValue(dieType);
-  return 1 + Math.floor(max * Math.random());
+  switch (dieType) {
+    case DieType.DF:
+      return Math.floor(3 * Math.random()) - 1;
+    default:
+      const max = maxValue(dieType);
+      return 1 + Math.floor(max * Math.random());
+  }
 }
 
 class EquationTerm {

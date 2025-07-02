@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 enum DieType {
+  DF = "dF",
   D3 = "d3",
   D4 = "d4",
   D5 = "d5",
