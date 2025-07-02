@@ -143,7 +143,9 @@ class Calculator {
 
   AddModifier() {
     try {
-      this.LatestTerm!.Modifier += this.CurrentSign;
+      if (this.LatestTerm !== undefined) {
+        this.LatestTerm.Modifier += this.CurrentSign;
+      }
     } catch (err) {
       this._errorHandler?.(err);
     }
