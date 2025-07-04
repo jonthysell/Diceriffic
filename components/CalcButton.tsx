@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#eeeeee",
     borderRadius: 10,
-    margin: 1,
+    margin: 3,
   },
   buttonText: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: "bold",
   },
 });

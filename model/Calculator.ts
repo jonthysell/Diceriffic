@@ -53,7 +53,7 @@ class Calculator {
 
   get CanExplode(): boolean {
     return (
-      this.LatestTerm?.HasExploded === false && this.CanDrop && this.CanKeep
+      this.CanDrop && this.CanKeep
     );
   }
 

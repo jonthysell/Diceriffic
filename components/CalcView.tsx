@@ -12,9 +12,10 @@ import Calculator from "../model/Calculator";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
   },
   topPanel: {
-    flex: 1,
+    flex: 1.5,
     flexDirection: "column",
   },
   equationText: {
@@ -28,12 +29,12 @@ const styles = StyleSheet.create({
     color: "#666666",
   },
   resultText: {
-    fontSize: 36,
+    fontSize: 72,
     textAlign: "right",
   },
   buttonRow: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   modeColumn: {
     flex: 1,
