@@ -220,6 +220,12 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
+          text={`${modifierText}${DieType.DF}`}
+          style={{ backgroundColor: "#f4cc94" }}
+          textStyle={{ color: "#000000" }}
+          onPress={() => wrap(() => props.calculator.AddDie(DieType.DF))}
+        />
+        <CalcButton
           text={`${modifierText}${DieType.D3}`}
           style={{ backgroundColor: "#ff389c" }}
           textStyle={{ color: "#ffffff" }}
@@ -230,11 +236,6 @@ function CalcView(props: CalcViewProps) {
           style={{ backgroundColor: "#145436" }}
           textStyle={{ color: "#ffffff" }}
           onPress={() => wrap(() => props.calculator.AddDie(DieType.D4))}
-        />
-        <CalcButton
-          text={`${modifierText}1`}
-          enabled={props.calculator.CanAddModifier}
-          onPress={() => wrap(() => props.calculator.AddModifier())}
         />
         <View style={styles.modeColumn}>
           <CalcButton
@@ -255,8 +256,13 @@ function CalcView(props: CalcViewProps) {
       </View>
       <View style={styles.buttonRow}>
         <CalcButton
+          text={`${modifierText}1`}
+          enabled={props.calculator.CanAddModifier}
+          onPress={() => wrap(() => props.calculator.AddModifier())}
+        />
+        <CalcButton
           text="⟳"
-          style={{ backgroundColor: "#999999", flex: 3 }}
+          style={{ backgroundColor: "#999999", flex: 2 }}
           textStyle={{
             color: "#ffffff",
             fontSize: 64,
