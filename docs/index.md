@@ -1,16 +1,18 @@
 <p align="center">
-<img src="./icon.png" alt="Dicerrific Icon" />
+<img src="./assets/icon.png" alt="Dicerrific Icon" />
 </p>
 
 Diceriffic is a polyhedral dice rolling app built to function like a simple calculator. You both roll and build up your dice "equation" simultaneously by tapping the appropriate buttons.
 
 ## Installation ##
 
-Get [Diceriffic on Google Play](https://play.google.com/store/apps/details?id=com.jonthysell.diceriffic&hl=en-US).
+*Web:* Go to [Diceriffic Web](./web).
+
+*Android:* Get [Diceriffic on Google Play](https://play.google.com/store/apps/details?id=com.jonthysell.diceriffic&hl=en-US).
 
 ## Usage ##
 
-<img align="right" src="./screenshot.png" alt="Dicerrific Screenshot" />
+<img align="right" src="./assets/screenshot.png" alt="Dicerrific Screenshot" />
 
 ### Basics ###
 
