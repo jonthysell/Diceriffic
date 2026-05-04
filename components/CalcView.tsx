@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const zws = '\u200B';
+
 interface CalcViewProps {
   calculator: Calculator;
 }
@@ -50,17 +52,17 @@ function CalcView(props: CalcViewProps) {
   const [resultText, setResultText] = useState(
     props.calculator.GetResultString(),
   );
-  const [equationText, setEquationText] = useState(" ");
-  const [rollsText, setRollsText] = useState(" ");
+  const [equationText, setEquationText] = useState(zws);
+  const [rollsText, setRollsText] = useState(zws);
   const [modifierText, setModifierText] = useState(
     props.calculator.CurrentSign >= 0 ? "+" : "−",
   );
 
   const wrap = (f: () => void) => {
     f();
-    setResultText(props.calculator.GetResultString());
-    setRollsText(props.calculator.GetRollsString());
-    setEquationText(props.calculator.GetEquationString());
+    setEquationText(props.calculator.GetEquationString() || zws);
+    setRollsText(props.calculator.GetRollsString() || zws);
+    setResultText(props.calculator.GetResultString() || zws);
     setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "−");
   };
 
