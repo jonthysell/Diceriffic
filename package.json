@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~5.0.5",
     "expo": "53.0.16",
+    "expo-crypto": "~14.1.5",
     "expo-dev-client": "~5.2.3",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",

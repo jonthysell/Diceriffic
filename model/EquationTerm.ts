@@ -1,6 +1,8 @@
 // Copyright (c) Jon Thysell <http://jonthysell.com>
 // Licensed under the MIT License.
 
+import { getRandomValues } from 'expo-crypto';
+
 import DieType from "./DieType";
 import RollResult from "./RollResult";
 
@@ -15,11 +17,23 @@ function maxValue(dieType: DieType): number {
 function rollDie(dieType: DieType): number {
   switch (dieType) {
     case DieType.DF:
-      return Math.floor(3 * Math.random()) - 1;
+      return getRandomInt(-1, 1);
     default:
       const max = maxValue(dieType);
-      return 1 + Math.floor(max * Math.random());
+      return getRandomInt(1, max);
   }
+}
+
+function getRandomInt(min: number, max: number) {
+  var byteArray = new Uint8Array(1);
+  getRandomValues(byteArray);
+
+  var range = max - min + 1;
+  var max_range = 256;
+  if (byteArray[0] >= Math.floor(max_range / range) * range) {
+      return getRandomInt(min, max);
+  }
+  return min + (byteArray[0] % range);
 }
 
 class EquationTerm {
