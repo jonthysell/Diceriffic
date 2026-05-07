@@ -186,7 +186,13 @@ class Calculator {
 
   Delete() {
     try {
-      this._equation.RemoveTerm();
+      if (this.LatestTerm?.CanUndo === true) {
+        this.LatestTerm?.Undo();
+      }
+      
+      if (this.LatestTerm?.CanUndo !== true) {
+        this._equation.RemoveTerm();
+      }
     } catch (err) {
       this._errorHandler?.(err);
     }

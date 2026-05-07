@@ -36,6 +36,8 @@ function getRandomInt(min: number, max: number) {
   return min + (byteArray[0] % range);
 }
 
+const MaxDice = 255;
+
 class EquationTerm {
   private readonly _sign: -1 | 1;
   private readonly _dieType: DieType;
@@ -105,6 +107,10 @@ class EquationTerm {
     return this._targetLTE > 0;
   }
 
+  get CanUndo(): boolean {
+    return this._results.length > 0;
+  }
+
   ReEvaluate(): void {
     // Re-roll original number of dice
     const numDice = this.NumDice;
@@ -130,6 +136,9 @@ class EquationTerm {
   }
 
   AddDie(): void {
+    if (this.NumDice >= MaxDice) {
+      throw new Error(`Unable to add more than ${MaxDice} dice.`);
+    }
     if (this.HasExploded) {
       throw new Error("Unable to add die after explode operation.");
     }
@@ -173,10 +182,22 @@ class EquationTerm {
   }
 
   private applyExplode(): void {
-    const max = maxValue(this._dieType);
-    for (const result of this._results) {
-      while (result.at(-1)!.Value === max) {
-        result.push(this.generateRoll(true));
+    if (this._explode === 0) {
+      // Remove any dice from exploding
+      for (const result of this._results) {
+        result.splice(1, result.length - 1);
+      }  
+    } else {
+      // Explode un-exploded dice
+
+      const max = maxValue(this._dieType);
+      for (const result of this._results) {
+        if (result.length > 1) {
+          throw new Error("Attempt to explode already exploded dice.");
+        }
+        while (result.at(-1)!.Value === max) {
+          result.push(this.generateRoll(true));
+        }
       }
     }
   }
@@ -210,10 +231,11 @@ class EquationTerm {
   }
 
   private applyDrops(): void {
-    this.resetKeeps();
+    // Set every dice to keep
+    this.resetKeeps(true);
 
     for (let i = 0; i < this._dropLowest; i++) {
-      const { minValue } = this.GetMinMaxValues();
+      const { minValue } = this.GetMinMaxValues(true);
       if (minValue !== undefined) {
         // Drop lowest
         minValue.Keep = false;
@@ -221,7 +243,7 @@ class EquationTerm {
     }
 
     for (let i = 0; i < this._dropHighest; i++) {
-      const { maxValue } = this.GetMinMaxValues();
+      const { maxValue } = this.GetMinMaxValues(true);
       if (maxValue !== undefined) {
         // Drop highest
         maxValue.Keep = false;
@@ -254,8 +276,12 @@ class EquationTerm {
   }
 
   private applyKeeps(): void {
-    this.resetKeeps(false);
+    // Set all dice to:
+    //   not keep if there is a keep operator
+    //   keep if there isn't any keep operator
+    this.resetKeeps(!this.HasKeeps);
 
+    // Find the lowest value(s) not being kept and mark them as kept
     for (let i = 0; i < this._keepLowest; i++) {
       const { minValue } = this.GetMinMaxValues(false);
       if (minValue !== undefined) {
@@ -264,6 +290,7 @@ class EquationTerm {
       }
     }
 
+    // Find the highest value(s) not being kept and mark them as kept
     for (let i = 0; i < this._keepHighest; i++) {
       const { maxValue } = this.GetMinMaxValues(false);
       if (maxValue !== undefined) {
@@ -273,11 +300,12 @@ class EquationTerm {
     }
   }
 
-  private resetKeeps(keep: boolean = true) {
+  // Reset the keep of every result to the given value
+  private resetKeeps(keep: boolean) {
     this._results.forEach((r) => r.forEach((v) => (v.Keep = keep)));
   }
 
-  private GetMinMaxValues(targetKeep: boolean = true): {
+  private GetMinMaxValues(targetKeep: boolean): {
     minValue: RollResult | undefined;
     maxValue: RollResult | undefined;
   } {
@@ -328,6 +356,40 @@ class EquationTerm {
     }
 
     this._targetLTE++;
+  }
+
+  Undo(): void {
+    if (!this.CanUndo) {
+      throw new Error("Unable to undo operation.");
+    }
+
+    // Undo in order of display string (not necessarily button history)
+
+    if (this.HasTarget) {
+      // Undo target 
+      this._targetGTE = 0;
+      this._targetLTE = 0;
+    } else if (this.Modifier != 0) {
+      // Undo modifier
+      this.Modifier = 0;
+    } else if (this.HasKeeps) {
+      // Undo keeps
+      this._keepHighest = 0;
+      this._keepLowest = 0;
+      this.applyKeeps();
+    } else if (this.HasDrops) {
+      // Undo drop highest
+      this._dropHighest = 0;
+      this._dropLowest = 0;
+      this.applyDrops();
+    } else if (this.HasExploded) {
+      // Undo explode
+      this._explode = 0;
+      this.applyExplode();
+    } else if (this._results.length > 0) {
+      // Undo the last die result
+      this._results.pop();
+    }
   }
 
   GetTotal(): number {

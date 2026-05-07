@@ -40,9 +40,17 @@ Tap the clear button (C) to clear your rolls and start over.
 
 ### Deleting ###
 
-Tap the delete button (⌫) to remove the last part of the dice equation.
+Tap the delete button (⌫) to remove the last part of the dice equation. This can be used to remove the constant modifier, operators, or roll results. Equation parts are removed from right to left. Paired operators (like `kh` and `kl` are removed together. Deleting will not cause remaining dice to be re-rolled.
 
-*Example:* You tapped (+d10) then (+d20) (+d20), giving you `1d10 + 1d20`. Tapping (⌫) will delete the `2d20`.
+*Example:* You tapped (+d10) then (+d10), giving you `2d10`. Tapping (⌫) will remove the last d10 roll, leaving you with `1d10`.
+
+*Example:* You tapped (+d10) then (+d20), giving you `1d10 + 1d20`. Tapping (⌫) will remove the `1d20` roll.
+
+*Example:* You tapped (+d10) then (+1) (+1), giving you `1d10+2`. Tapping (⌫) will remove the `+2` modifier.
+
+*Example:* You tapped (+d10) then (+d10) (kh) (kh), giving you `2d10kh2`. Tapping (⌫) will remove the `kh2` keep operator.
+
+*Example:* You tapped (+d10) then (+d10) (kl) (kh), giving you `2d10kl1kh1`. Tapping (⌫) will remove both of the `k11` and `kh1` keep operators.
 
 ### Other Operators ###
 
