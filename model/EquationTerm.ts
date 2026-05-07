@@ -1,7 +1,7 @@
 // Copyright (c) Jon Thysell <http://jonthysell.com>
 // Licensed under the MIT License.
 
-import { getRandomValues } from 'expo-crypto';
+import { getRandomValues } from "expo-crypto";
 
 import DieType from "./DieType";
 import RollResult from "./RollResult";
@@ -25,13 +25,13 @@ function rollDie(dieType: DieType): number {
 }
 
 function getRandomInt(min: number, max: number) {
-  var byteArray = new Uint8Array(1);
+  let byteArray = new Uint8Array(1);
   getRandomValues(byteArray);
 
-  var range = max - min + 1;
-  var max_range = 256;
+  let range = max - min + 1;
+  let max_range = 256;
   if (byteArray[0] >= Math.floor(max_range / range) * range) {
-      return getRandomInt(min, max);
+    return getRandomInt(min, max);
   }
   return min + (byteArray[0] % range);
 }
@@ -186,7 +186,7 @@ class EquationTerm {
       // Remove any dice from exploding
       for (const result of this._results) {
         result.splice(1, result.length - 1);
-      }  
+      }
     } else {
       // Explode un-exploded dice
 
@@ -366,10 +366,10 @@ class EquationTerm {
     // Undo in order of display string (not necessarily button history)
 
     if (this.HasTarget) {
-      // Undo target 
+      // Undo target
       this._targetGTE = 0;
       this._targetLTE = 0;
-    } else if (this.Modifier != 0) {
+    } else if (this.Modifier !== 0) {
       // Undo modifier
       this.Modifier = 0;
     } else if (this.HasKeeps) {

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   modeColumn: {
     flex: 1,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const zws = '\u200B';
+const zws = "\u200B";
 
 interface CalcViewProps {
   calculator: Calculator;
