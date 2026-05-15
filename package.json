@@ -4,7 +4,8 @@
   "main": "expo/AppEntry.js",
   "scripts": {
     "lint": "eslint .",
-    "build:android": "npx eas-cli build --platform android --profile development",
+    "build:android:dev": "npx eas-cli build --platform android --profile development",
+    "build:android:apk": "npx eas-cli build --platform android --profile preview",
     "release:android": "npx eas-cli build --platform android --profile production",
     "release:web": "npx expo export -p web",
     "start": "npx expo start",
