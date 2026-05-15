@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, useColorScheme, View } from "react-native";
 
 import CalcButton from "./CalcButton";
 
@@ -21,16 +21,32 @@ const styles = StyleSheet.create({
   equationText: {
     fontSize: 18,
     textAlign: "right",
+  },
+  equationTextLight: {
     color: "#666666",
+  },
+  equationTextDark: {
+    color: "#999999",
   },
   rollsText: {
     fontSize: 14,
     textAlign: "right",
+  },
+  rollsTextLight: {
     color: "#666666",
+  },
+  rollsTextDark: {
+    color: "#999999",
   },
   resultText: {
     fontSize: 72,
     textAlign: "right",
+  },
+  resultextLight: {
+    color: "#000000",
+  },
+  resultTextDark: {
+    color: "#ffffff",
   },
   buttonRow: {
     flex: 1,
@@ -66,20 +82,30 @@ function CalcView(props: CalcViewProps) {
     setModifierText(props.calculator.CurrentSign >= 0 ? "+" : "−");
   };
 
+  const colorScheme = useColorScheme();
+  const equationTextStyle = [
+    styles.equationText,
+    colorScheme === "dark" ? styles.equationTextDark : styles.equationTextLight,
+  ];
+  const rollsTextStyle = [
+    styles.rollsText,
+    colorScheme === "dark" ? styles.rollsTextDark : styles.rollsTextLight,
+  ];
+  const resultTextStyle = [
+    styles.resultText,
+    colorScheme === "dark" ? styles.resultTextDark : styles.resultextLight,
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.topPanel}>
-        <Text
-          style={styles.equationText}
-          numberOfLines={1}
-          ellipsizeMode="head"
-        >
+        <Text style={equationTextStyle} numberOfLines={1} ellipsizeMode="head">
           {equationText}
         </Text>
-        <Text style={styles.rollsText} numberOfLines={1} ellipsizeMode="head">
+        <Text style={rollsTextStyle} numberOfLines={1} ellipsizeMode="head">
           {rollsText}
         </Text>
-        <Text style={styles.resultText} numberOfLines={1}>
+        <Text style={resultTextStyle} numberOfLines={1}>
           {resultText}
         </Text>
       </View>
@@ -259,6 +285,8 @@ function CalcView(props: CalcViewProps) {
       <View style={styles.buttonRow}>
         <CalcButton
           text={`${modifierText}1`}
+          style={{ backgroundColor: "#ffffff" }}
+          textStyle={{ color: "#000000" }}
           enabled={props.calculator.CanAddModifier}
           onPress={() => wrap(() => props.calculator.AddModifier())}
         />

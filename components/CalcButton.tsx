@@ -7,6 +7,7 @@ import {
   StyleProp,
   Text,
   TextStyle,
+  useColorScheme,
   ViewStyle,
 } from "react-native";
 
@@ -15,11 +16,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
     borderWidth: 1,
-    borderColor: "#eeeeee",
     borderRadius: 10,
     margin: 3,
+  },
+  buttonLight: {
+    backgroundColor: "#f9f9f9",
+    borderColor: "#eeeeee",
+  },
+  buttonDark: {
+    backgroundColor: "#060606",
+    borderColor: "#111111",
   },
   buttonText: {
     fontSize: 24,
@@ -38,10 +45,17 @@ interface CalcButtonProps {
 }
 
 function CalcButton(props: CalcButtonProps) {
+  // Automatic light/dark theme
+  const colorScheme = useColorScheme();
+  const buttonStyle = [
+    styles.button,
+    colorScheme === "dark" ? styles.buttonDark : styles.buttonLight,
+  ];
+  const underlayColor = colorScheme === "dark" ? "#999999" : "#666666";
   return (
     <TouchableHighlight
-      style={[styles.button, props.style]}
-      underlayColor="#666666"
+      style={[buttonStyle, props.style]}
+      underlayColor={underlayColor}
       //disabled={props.enabled === false}
       onPress={() => props.onPress?.()}
       onPressIn={() => props.onPressIn?.()}
