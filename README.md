@@ -10,7 +10,7 @@ Diceriffic is a polyhedral dice rolling app built to function like a simple calc
 
 *Web:* Go to [Diceriffic Web](https://jonthysell.github.io/Diceriffic/web).
 
-*Android:* Get [Diceriffic on Google Play](https://play.google.com/store/apps/details?id=com.jonthysell.diceriffic&hl=en-US).
+*Android:* Get [Diceriffic on Google Play](https://play.google.com/store/apps/details?id=com.jonthysell.diceriffic).
 
 ## Usage ##
 
@@ -18,6 +18,6 @@ Read the [Diceriffic Documentation](https://jonthysell.github.io/Diceriffic/).
 
 ## Errata ##
 
-Diceriffic is open-source under the MIT license. Source available at https://github.com/jonthysell/Diceriffic.
+Diceriffic is open-source under the MIT license.
 
 Copyright (c) 2024-2026 Jon Thysell
